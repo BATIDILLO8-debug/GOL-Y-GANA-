@@ -1,38 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+
+import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 
 export default function AdminPage() {
 
   const [equipoA, setEquipoA] = useState('')
   const [equipoB, setEquipoB] = useState('')
   const [fecha, setFecha] = useState('')
-
-  const [loading, setLoading] = useState(true)
-
-  // VERIFICAR SESION
-
-  useEffect(() => {
-
-    verificarSesion()
-
-  }, [])
-
-  const verificarSesion = async () => {
-
-    const { data } = await supabase.auth.getSession()
-
-    if (!data.session) {
-
-      window.location.href = '/login'
-      return
-    }
-
-    setLoading(false)
-  }
-
-  // CREAR PARTIDO
 
   const crearPartido = async () => {
 
@@ -42,14 +20,10 @@ export default function AdminPage() {
       return
     }
 
-    // DESACTIVAR TODOS LOS PARTIDOS
-
     await supabase
       .from('partidos')
       .update({ activo: false })
       .neq('id', 0)
-
-    // CREAR NUEVO PARTIDO
 
     const { error } = await supabase
       .from('partidos')
@@ -76,96 +50,86 @@ export default function AdminPage() {
     setFecha('')
   }
 
-  // LOADING
-
-  if (loading) {
-
-    return (
-
-      <main className="min-h-screen flex items-center justify-center bg-blue-950">
-
-        <p className="text-white text-4xl font-black">
-          Verificando sesión...
-        </p>
-
-      </main>
-    )
-  }
-
   return (
 
-    <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
+    <AuthGuard>
 
-      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
 
-        {/* HEADER */}
+        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
 
-        <div className="bg-yellow-400 p-6 text-center">
+          {/* HEADER */}
 
-          <h1 className="text-5xl font-black text-blue-900 uppercase">
-            Panel Admin
-          </h1>
+          <div className="bg-yellow-400 p-6">
 
-          <p className="text-red-600 text-2xl font-bold mt-2">
-            Gol y Gana con Nuestra Selección
-          </p>
+            <div className="flex justify-end mb-4">
 
-        </div>
+              <LogoutButton />
 
-        {/* CONTENIDO */}
+            </div>
 
-        <div className="p-10">
+            <div className="text-center">
 
-          <h2 className="text-3xl font-black text-blue-900 mb-8">
-            Crear Partido
-          </h2>
+              <h1 className="text-5xl font-black text-blue-900 uppercase">
+                Panel Admin
+              </h1>
 
-          <div className="space-y-6">
+              <p className="text-red-600 text-2xl font-bold mt-2">
+                Gol y Gana con Nuestra Selección
+              </p>
 
-            {/* EQUIPO A */}
+            </div>
 
-            <input
-              type="text"
-              placeholder="Equipo A"
-              value={equipoA}
-              onChange={(e) => setEquipoA(e.target.value)}
-              className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-            />
+          </div>
 
-            {/* EQUIPO B */}
+          {/* CONTENIDO */}
 
-            <input
-              type="text"
-              placeholder="Equipo B"
-              value={equipoB}
-              onChange={(e) => setEquipoB(e.target.value)}
-              className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-            />
+          <div className="p-10">
 
-            {/* FECHA */}
+            <h2 className="text-3xl font-black text-blue-900 mb-8">
+              Crear Partido
+            </h2>
 
-            <input
-              type="datetime-local"
-              value={fecha}
-              onChange={(e) => setFecha(e.target.value)}
-              className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-            />
+            <div className="space-y-6">
 
-            {/* BOTON */}
+              <input
+                type="text"
+                placeholder="Equipo A"
+                value={equipoA}
+                onChange={(e) => setEquipoA(e.target.value)}
+                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+              />
 
-            <button
-              onClick={crearPartido}
-              className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-3xl font-black p-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
-            >
-              ⚽ CREAR PARTIDO
-            </button>
+              <input
+                type="text"
+                placeholder="Equipo B"
+                value={equipoB}
+                onChange={(e) => setEquipoB(e.target.value)}
+                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+              />
+
+              <input
+                type="datetime-local"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+              />
+
+              <button
+                onClick={crearPartido}
+                className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-3xl font-black p-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
+              >
+                ⚽ CREAR PARTIDO
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+      </main>
 
-    </main>
+    </AuthGuard>
   )
 }
