@@ -324,7 +324,7 @@ export default function Home() {
                 🇨🇴
               </div>
 
-              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase">
+              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase break-words">
                 {equipoA || 'Colombia'}
               </p>
 
@@ -344,7 +344,7 @@ export default function Home() {
                 🇯🇵
               </div>
 
-              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase">
+              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase break-words">
                 {equipoB || 'Japón'}
               </p>
 
@@ -354,70 +354,72 @@ export default function Home() {
 
           {/* FECHA */}
 
-          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-4 md:p-8 shadow-xl mb-10">
+          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-4 md:p-8 shadow-xl mb-8">
 
-            <div className="text-center mb-6">
+            <div className="text-center mb-5">
 
               <p className="text-blue-900 font-black text-lg md:text-2xl">
                 📅 Cierre del formulario
               </p>
 
-              <p className="text-red-600 text-xl md:text-4xl font-black mt-3">
+              <p className="text-red-600 text-2xl md:text-4xl font-black mt-2 break-words">
                 {fechaCierre || 'Por definir'}
               </p>
 
             </div>
 
-            <p className="text-center text-blue-900 text-lg md:text-2xl font-black mb-6 uppercase">
+            <p className="text-center text-blue-900 text-lg md:text-2xl font-black mb-5 uppercase">
               Faltan para cerrar
             </p>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* CONTADOR */}
 
-              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+
+              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
 
                 <p className="text-3xl md:text-5xl font-black">
                   {dias}
                 </p>
 
-                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                <p className="text-xs md:text-lg uppercase font-bold mt-1">
                   Días
                 </p>
 
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
 
                 <p className="text-3xl md:text-5xl font-black">
                   {horas}
                 </p>
 
-                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                <p className="text-xs md:text-lg uppercase font-bold mt-1">
                   Horas
                 </p>
 
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
 
                 <p className="text-3xl md:text-5xl font-black">
                   {minutos}
                 </p>
 
-                <p className="text-sm md:text-lg uppercase font-bold mt-2">
-                  Minutos
+                <p className="text-xs md:text-lg uppercase font-bold mt-1">
+                  Min
                 </p>
 
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
 
                 <p className="text-3xl md:text-5xl font-black">
                   {segundos}
                 </p>
 
-                <p className="text-sm md:text-lg uppercase font-bold mt-2">
-                  Segundos
+                <p className="text-xs md:text-lg uppercase font-bold mt-1">
+                  Seg
                 </p>
 
               </div>
@@ -426,13 +428,13 @@ export default function Home() {
 
           </div>
 
-          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-10">
+          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-8">
             🎯 Indica el marcador exacto del partido y participa por premios oficiales.
           </p>
 
           {/* FORMULARIO */}
 
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
 
             <input
               type="text"
@@ -492,19 +494,19 @@ export default function Home() {
 
           {/* MARCADOR */}
 
-          <div className="grid grid-cols-2 gap-4 md:gap-8 mt-10 mb-10">
+          <div className="grid grid-cols-2 gap-3 md:gap-8 mt-8 mb-8">
 
             <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
 
-              <div className="bg-yellow-400 py-3 md:py-4 text-center">
+              <div className="bg-yellow-400 py-3 text-center px-2">
 
-                <p className="text-blue-900 text-lg md:text-3xl font-black uppercase">
+                <p className="text-blue-900 text-sm md:text-3xl font-black uppercase break-words">
                   {equipoA || 'Colombia'}
                 </p>
 
               </div>
 
-              <div className="p-4 md:p-6">
+              <div className="p-3 md:p-6">
 
                 <input
                   type="number"
@@ -513,10 +515,10 @@ export default function Home() {
                     setMarcadorA(e.target.value)
                   }
                   placeholder="0"
-                  className="w-full h-24 md:h-36 text-center text-4xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                  className="w-full h-20 md:h-36 text-center text-3xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
                 />
 
-                <p className="text-center text-sm md:text-lg text-gray-700 mt-4">
+                <p className="text-center text-xs md:text-lg text-gray-700 mt-3">
                   Goles de {equipoA || 'Colombia'}
                 </p>
 
@@ -526,15 +528,15 @@ export default function Home() {
 
             <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
 
-              <div className="bg-blue-900 py-3 md:py-4 text-center">
+              <div className="bg-blue-900 py-3 text-center px-2">
 
-                <p className="text-white text-lg md:text-3xl font-black uppercase">
+                <p className="text-white text-sm md:text-3xl font-black uppercase break-words">
                   {equipoB || 'Japón'}
                 </p>
 
               </div>
 
-              <div className="p-4 md:p-6">
+              <div className="p-3 md:p-6">
 
                 <input
                   type="number"
@@ -543,10 +545,10 @@ export default function Home() {
                     setMarcadorB(e.target.value)
                   }
                   placeholder="0"
-                  className="w-full h-24 md:h-36 text-center text-4xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                  className="w-full h-20 md:h-36 text-center text-3xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
                 />
 
-                <p className="text-center text-sm md:text-lg text-gray-700 mt-4">
+                <p className="text-center text-xs md:text-lg text-gray-700 mt-3">
                   Goles de {equipoB || 'Japón'}
                 </p>
 
@@ -558,11 +560,11 @@ export default function Home() {
 
           {/* CHECKS */}
 
-          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mb-10">
+          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mb-8">
 
-            <div className="space-y-5">
+            <div className="space-y-6">
 
-              <label className="flex items-center gap-4 text-base md:text-2xl">
+              <label className="flex items-start gap-3 text-sm md:text-2xl text-gray-800 font-semibold leading-snug">
 
                 <input
                   type="checkbox"
@@ -570,14 +572,16 @@ export default function Home() {
                   onChange={(e) =>
                     setAceptaReglamento(e.target.checked)
                   }
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="w-5 h-5 mt-1"
                 />
 
-                Acepto el reglamento interno
+                <span>
+                  Acepto el reglamento interno
+                </span>
 
               </label>
 
-              <label className="flex items-center gap-4 text-base md:text-2xl">
+              <label className="flex items-start gap-3 text-sm md:text-2xl text-gray-800 font-semibold leading-snug">
 
                 <input
                   type="checkbox"
@@ -585,20 +589,22 @@ export default function Home() {
                   onChange={(e) =>
                     setAceptaDatos(e.target.checked)
                   }
-                  className="w-5 h-5 md:w-6 md:h-6"
+                  className="w-5 h-5 mt-1"
                 />
 
-                Acepto la política de tratamiento de datos
+                <span>
+                  Acepto la política de tratamiento de datos
+                </span>
 
               </label>
 
             </div>
 
-            <div className="text-center mt-8">
+            <div className="text-center mt-6">
 
               <a
                 href="#"
-                className="text-blue-700 font-black underline text-lg md:text-2xl"
+                className="text-blue-700 font-black underline text-base md:text-2xl"
               >
                 📄 Ver reglamento oficial
               </a>
@@ -611,7 +617,7 @@ export default function Home() {
 
           <button
             onClick={guardarParticipacion}
-            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-2xl md:text-5xl font-black py-5 md:py-7 rounded-3xl shadow-2xl"
+            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-xl md:text-5xl font-black py-4 md:py-7 rounded-3xl shadow-2xl"
           >
             🏆 PARTICIPAR
           </button>
