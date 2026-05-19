@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
-import AuthGuard from '@/components/AuthGuard'
-import LogoutButton from '@/components/LogoutButton'
+
 export default function Home() {
 
   const [cedula, setCedula] = useState('')
@@ -154,8 +153,6 @@ export default function Home() {
       return
     }
 
-    // VALIDAR DUPLICADO
-
     const { data: participanteExistente } = await supabase
       .from('participantes')
       .select('*')
@@ -184,15 +181,11 @@ export default function Home() {
       }
     }
 
-    // GENERAR CODIGO
-
     const codigo = Math.floor(
       1000 + Math.random() * 9000
     ).toString()
 
     let participanteId = null
-
-    // CREAR PARTICIPANTE SI NO EXISTE
 
     if (!participanteExistente) {
 
@@ -225,8 +218,6 @@ export default function Home() {
 
       participanteId = participanteExistente.id
     }
-
-    // GUARDAR PREDICCION
 
     const { error } = await supabase
       .from('predicciones')
@@ -261,7 +252,7 @@ export default function Home() {
   return (
 
     <main
-      className="relative min-h-screen flex justify-center items-center p-10 bg-cover bg-center"
+      className="relative min-h-screen flex justify-center items-center p-3 md:p-10 bg-cover bg-center"
       style={{
         backgroundImage: "url('/fondo.jpg')"
       }}
@@ -273,64 +264,67 @@ export default function Home() {
 
       {/* CONTENEDOR */}
 
-      <div className="relative bg-white rounded-[35px] shadow-2xl w-full max-w-2xl overflow-hidden border-[6px] border-blue-900">
+      <div className="relative bg-white rounded-[25px] md:rounded-[35px] shadow-2xl w-full max-w-2xl overflow-hidden border-[4px] md:border-[6px] border-blue-900">
 
         {/* HEADER */}
 
-        <div className="bg-white p-8">
+        <div className="bg-white p-4 md:p-8">
 
           <div className="flex justify-center">
 
             <Image
               src="/logo.png"
               alt="Logo"
-              width={320}
-              height={320}
+              width={280}
+              height={280}
+              className="w-44 md:w-72 h-auto"
             />
 
           </div>
 
-          <h1 className="text-6xl font-black text-center text-blue-900 uppercase leading-none">
+          <h1 className="text-3xl md:text-6xl font-black text-center text-blue-900 uppercase leading-none">
             Gol y Gana
           </h1>
 
-          <h2 className="text-center text-4xl font-black text-red-600 uppercase mt-2">
+          <h2 className="text-center text-xl md:text-4xl font-black text-red-600 uppercase mt-2">
             Con Nuestra Selección
           </h2>
 
-          <div className="flex justify-center items-center gap-4 mt-5">
+          <div className="flex justify-center items-center gap-2 md:gap-4 mt-4 md:mt-5">
 
-            <div className="w-20 h-2 bg-yellow-400 rounded-full"></div>
+            <div className="w-10 md:w-20 h-2 bg-yellow-400 rounded-full"></div>
 
-            <p className="text-yellow-600 text-2xl font-black uppercase">
+            <p className="text-yellow-600 text-sm md:text-2xl font-black uppercase text-center">
               Amor por lo Nuestro
             </p>
 
-            <div className="w-20 h-2 bg-red-500 rounded-full"></div>
+            <div className="w-10 md:w-20 h-2 bg-red-500 rounded-full"></div>
 
           </div>
 
         </div>
 
-        {/* TITULO PARTIDO */}
+        {/* TITULO */}
 
-        <div className="bg-blue-900 text-white text-center py-5 text-3xl font-black uppercase">
+        <div className="bg-blue-900 text-white text-center py-4 md:py-5 text-xl md:text-3xl font-black uppercase">
           Partido Activo
         </div>
 
         {/* CONTENIDO */}
 
-        <div className="p-8">
+        <div className="p-4 md:p-8">
 
           {/* EQUIPOS */}
 
-          <div className="grid grid-cols-3 items-center text-center mb-8">
+          <div className="grid grid-cols-3 items-center text-center mb-8 gap-2">
 
             <div>
 
-              <div className="text-7xl mb-3">🇨🇴</div>
+              <div className="text-4xl md:text-7xl mb-3">
+                🇨🇴
+              </div>
 
-              <p className="text-4xl font-black text-blue-900 uppercase">
+              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase">
                 {equipoA || 'Colombia'}
               </p>
 
@@ -338,7 +332,7 @@ export default function Home() {
 
             <div>
 
-              <div className="bg-red-600 text-white text-4xl font-black px-6 py-4 rounded-2xl inline-block shadow-xl">
+              <div className="bg-red-600 text-white text-xl md:text-4xl font-black px-3 md:px-6 py-2 md:py-4 rounded-2xl inline-block shadow-xl">
                 VS
               </div>
 
@@ -346,9 +340,11 @@ export default function Home() {
 
             <div>
 
-              <div className="text-7xl mb-3">🇯🇵</div>
+              <div className="text-4xl md:text-7xl mb-3">
+                🇯🇵
+              </div>
 
-              <p className="text-4xl font-black text-blue-900 uppercase">
+              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase">
                 {equipoB || 'Japón'}
               </p>
 
@@ -358,51 +354,79 @@ export default function Home() {
 
           {/* FECHA */}
 
-          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-8 shadow-xl mb-10">
+          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-4 md:p-8 shadow-xl mb-10">
 
             <div className="text-center mb-6">
 
-              <p className="text-blue-900 font-black text-2xl">
+              <p className="text-blue-900 font-black text-lg md:text-2xl">
                 📅 Cierre del formulario
               </p>
 
-              <p className="text-red-600 text-4xl font-black mt-3">
+              <p className="text-red-600 text-xl md:text-4xl font-black mt-3">
                 {fechaCierre || 'Por definir'}
               </p>
 
             </div>
 
-            <p className="text-center text-blue-900 text-2xl font-black mb-6 uppercase">
+            <p className="text-center text-blue-900 text-lg md:text-2xl font-black mb-6 uppercase">
               Faltan para cerrar
             </p>
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 
-              <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-                <p className="text-5xl font-black">{dias}</p>
-                <p className="text-lg uppercase font-bold mt-2">Días</p>
+              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+
+                <p className="text-3xl md:text-5xl font-black">
+                  {dias}
+                </p>
+
+                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                  Días
+                </p>
+
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-                <p className="text-5xl font-black">{horas}</p>
-                <p className="text-lg uppercase font-bold mt-2">Horas</p>
+              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+
+                <p className="text-3xl md:text-5xl font-black">
+                  {horas}
+                </p>
+
+                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                  Horas
+                </p>
+
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-                <p className="text-5xl font-black">{minutos}</p>
-                <p className="text-lg uppercase font-bold mt-2">Minutos</p>
+              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+
+                <p className="text-3xl md:text-5xl font-black">
+                  {minutos}
+                </p>
+
+                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                  Minutos
+                </p>
+
               </div>
 
-              <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-                <p className="text-5xl font-black">{segundos}</p>
-                <p className="text-lg uppercase font-bold mt-2">Segundos</p>
+              <div className="bg-blue-900 rounded-2xl p-4 md:p-5 text-center text-white shadow-xl">
+
+                <p className="text-3xl md:text-5xl font-black">
+                  {segundos}
+                </p>
+
+                <p className="text-sm md:text-lg uppercase font-bold mt-2">
+                  Segundos
+                </p>
+
               </div>
 
             </div>
 
           </div>
 
-          <p className="text-center text-blue-900 text-2xl font-bold mb-10">
+          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-10">
             🎯 Indica el marcador exacto del partido y participa por premios oficiales.
           </p>
 
@@ -418,7 +442,7 @@ export default function Home() {
                 setCedula(e.target.value)
                 buscarParticipante(e.target.value)
               }}
-              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
             />
 
             <input
@@ -426,7 +450,7 @@ export default function Home() {
               placeholder="Ingresa tu nombre completo"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
             />
 
             <input
@@ -434,7 +458,7 @@ export default function Home() {
               placeholder="Ingresa tu número de celular"
               value={celular}
               onChange={(e) => setCelular(e.target.value)}
-              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
             />
 
             <select
@@ -442,7 +466,7 @@ export default function Home() {
               onChange={(e) =>
                 setLugarResidencia(e.target.value)
               }
-              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
             >
 
               <option value="">
@@ -468,19 +492,19 @@ export default function Home() {
 
           {/* MARCADOR */}
 
-          <div className="grid grid-cols-2 gap-8 mt-10 mb-10">
+          <div className="grid grid-cols-2 gap-4 md:gap-8 mt-10 mb-10">
 
             <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
 
-              <div className="bg-yellow-400 py-4 text-center">
+              <div className="bg-yellow-400 py-3 md:py-4 text-center">
 
-                <p className="text-blue-900 text-3xl font-black uppercase">
+                <p className="text-blue-900 text-lg md:text-3xl font-black uppercase">
                   {equipoA || 'Colombia'}
                 </p>
 
               </div>
 
-              <div className="p-6">
+              <div className="p-4 md:p-6">
 
                 <input
                   type="number"
@@ -489,10 +513,10 @@ export default function Home() {
                     setMarcadorA(e.target.value)
                   }
                   placeholder="0"
-                  className="w-full h-36 text-center text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                  className="w-full h-24 md:h-36 text-center text-4xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
                 />
 
-                <p className="text-center text-lg text-gray-700 mt-4">
+                <p className="text-center text-sm md:text-lg text-gray-700 mt-4">
                   Goles de {equipoA || 'Colombia'}
                 </p>
 
@@ -502,15 +526,15 @@ export default function Home() {
 
             <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
 
-              <div className="bg-blue-900 py-4 text-center">
+              <div className="bg-blue-900 py-3 md:py-4 text-center">
 
-                <p className="text-white text-3xl font-black uppercase">
+                <p className="text-white text-lg md:text-3xl font-black uppercase">
                   {equipoB || 'Japón'}
                 </p>
 
               </div>
 
-              <div className="p-6">
+              <div className="p-4 md:p-6">
 
                 <input
                   type="number"
@@ -519,10 +543,10 @@ export default function Home() {
                     setMarcadorB(e.target.value)
                   }
                   placeholder="0"
-                  className="w-full h-36 text-center text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                  className="w-full h-24 md:h-36 text-center text-4xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
                 />
 
-                <p className="text-center text-lg text-gray-700 mt-4">
+                <p className="text-center text-sm md:text-lg text-gray-700 mt-4">
                   Goles de {equipoB || 'Japón'}
                 </p>
 
@@ -534,11 +558,11 @@ export default function Home() {
 
           {/* CHECKS */}
 
-          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-8 mb-10">
+          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mb-10">
 
             <div className="space-y-5">
 
-              <label className="flex items-center gap-4 text-2xl">
+              <label className="flex items-center gap-4 text-base md:text-2xl">
 
                 <input
                   type="checkbox"
@@ -546,14 +570,14 @@ export default function Home() {
                   onChange={(e) =>
                     setAceptaReglamento(e.target.checked)
                   }
-                  className="w-6 h-6"
+                  className="w-5 h-5 md:w-6 md:h-6"
                 />
 
                 Acepto el reglamento interno
 
               </label>
 
-              <label className="flex items-center gap-4 text-2xl">
+              <label className="flex items-center gap-4 text-base md:text-2xl">
 
                 <input
                   type="checkbox"
@@ -561,7 +585,7 @@ export default function Home() {
                   onChange={(e) =>
                     setAceptaDatos(e.target.checked)
                   }
-                  className="w-6 h-6"
+                  className="w-5 h-5 md:w-6 md:h-6"
                 />
 
                 Acepto la política de tratamiento de datos
@@ -574,7 +598,7 @@ export default function Home() {
 
               <a
                 href="#"
-                className="text-blue-700 font-black underline text-2xl"
+                className="text-blue-700 font-black underline text-lg md:text-2xl"
               >
                 📄 Ver reglamento oficial
               </a>
@@ -587,7 +611,7 @@ export default function Home() {
 
           <button
             onClick={guardarParticipacion}
-            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-5xl font-black py-7 rounded-3xl shadow-2xl"
+            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-2xl md:text-5xl font-black py-5 md:py-7 rounded-3xl shadow-2xl"
           >
             🏆 PARTICIPAR
           </button>
