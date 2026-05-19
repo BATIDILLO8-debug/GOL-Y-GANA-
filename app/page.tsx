@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
-
+import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 export default function Home() {
 
   const [cedula, setCedula] = useState('')
