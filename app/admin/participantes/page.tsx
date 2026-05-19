@@ -1,8 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import { supabase } from '@/lib/supabase'
+
 import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -10,6 +13,8 @@ import { saveAs } from 'file-saver'
 export default function ParticipantesPage() {
 
   const [participaciones, setParticipaciones] = useState<any[]>([])
+
+  // CARGAR PARTICIPACIONES
 
   const cargarParticipaciones = async () => {
 
@@ -42,6 +47,8 @@ export default function ParticipantesPage() {
   useEffect(() => {
     cargarParticipaciones()
   }, [])
+
+  // EXPORTAR EXCEL
 
   const exportarExcel = () => {
 
@@ -101,17 +108,37 @@ export default function ParticipantesPage() {
 
         <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
 
+          {/* HEADER */}
+
           <div className="bg-yellow-400 p-6">
 
-            <h1 className="text-5xl font-black text-center text-blue-900 uppercase">
-              Participantes
-            </h1>
+            <div className="flex justify-end mb-4">
 
-            <p className="text-center text-red-600 text-2xl font-bold mt-2">
-              Gol y Gana con Nuestra Selección
-            </p>
+              <LogoutButton />
+
+            </div>
+
+            <div className="text-center">
+
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="w-32 mx-auto mb-4"
+              />
+
+              <h1 className="text-5xl font-black text-blue-900 uppercase">
+                Participantes
+              </h1>
+
+              <p className="text-red-600 text-2xl font-bold mt-2">
+                Gol y Gana con Nuestra Selección
+              </p>
+
+            </div>
 
           </div>
+
+          {/* BOTON EXPORTAR */}
 
           <div className="p-6 bg-gray-100 border-b flex justify-end">
 
@@ -123,6 +150,8 @@ export default function ParticipantesPage() {
             </button>
 
           </div>
+
+          {/* TABLA */}
 
           <div className="overflow-x-auto">
 
@@ -186,11 +215,17 @@ export default function ParticipantesPage() {
                     </td>
 
                     <td className="p-5 text-lg font-bold text-blue-900">
-                      {item.partidos?.equipo_a} vs {item.partidos?.equipo_b}
+                      {item.partidos?.equipo_a}
+                      {' '}
+                      vs
+                      {' '}
+                      {item.partidos?.equipo_b}
                     </td>
 
                     <td className="p-5 text-3xl font-black text-red-600">
-                      {item.marcador_a} - {item.marcador_b}
+                      {item.marcador_a}
+                      {' - '}
+                      {item.marcador_b}
                     </td>
 
                   </tr>

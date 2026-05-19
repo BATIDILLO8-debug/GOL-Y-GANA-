@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 
 import { supabase } from '@/lib/supabase'
 
-import AuthGuard from '../../../components/AuthGuard'
-import LogoutButton from '../../../components/LogoutButton'
+import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 
 export default function LivePage() {
 

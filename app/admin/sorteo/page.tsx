@@ -1,7 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import { supabase } from '@/lib/supabase'
+
+import AuthGuard from '@/components/AuthGuard'
+import LogoutButton from '@/components/LogoutButton'
 
 export default function SorteoPage() {
 
@@ -63,20 +67,26 @@ export default function SorteoPage() {
     if (error) {
 
       console.log(error)
+
       alert('Error buscando acertantes')
+
       return
     }
 
     setAcertantes(data || [])
 
-    alert(`Se encontraron ${data?.length || 0} acertantes`)
+    alert(
+      `Se encontraron ${data?.length || 0} acertantes`
+    )
   }
 
   // MEZCLAR ARRAY
 
   const mezclarArray = (array: any[]) => {
 
-    return [...array].sort(() => Math.random() - 0.5)
+    return [...array].sort(
+      () => Math.random() - 0.5
+    )
   }
 
   // REALIZAR SORTEO
@@ -86,6 +96,7 @@ export default function SorteoPage() {
     if (acertantes.length === 0) {
 
       alert('No hay acertantes')
+
       return
     }
 
@@ -121,7 +132,7 @@ export default function SorteoPage() {
     alert('🎉 Sorteo realizado correctamente')
   }
 
-  // COMPONENTE TABLA
+  // TABLA
 
   const TablaGanadores = ({
     titulo,
@@ -213,213 +224,251 @@ export default function SorteoPage() {
 
   return (
 
-    <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
+    <AuthGuard>
 
-      <div className="max-w-7xl mx-auto">
+      <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
 
-        {/* HEADER */}
+        <div className="max-w-7xl mx-auto">
 
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-10">
+          {/* HEADER */}
 
-          <div className="bg-yellow-400 p-6 text-center">
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-10">
 
-            <h1 className="text-5xl font-black text-blue-900 uppercase">
-              Sorteo Oficial
-            </h1>
+            <div className="bg-yellow-400 p-6">
 
-            <p className="text-red-600 text-2xl font-bold mt-2">
-              Gol y Gana con Nuestra Selección
-            </p>
+              <div className="flex justify-end mb-4">
 
-          </div>
+                <LogoutButton />
 
-          {/* FILTRO */}
+              </div>
 
-          <div className="p-8">
+              <div className="text-center">
 
-            <div className="grid md:grid-cols-4 gap-5 mb-8">
+                <img
+                  src="/logo.png"
+                  alt="Logo"
+                  className="w-32 mx-auto mb-4"
+                />
 
-              <select
-                value={partidoId}
-                onChange={(e) => setPartidoId(e.target.value)}
-                className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
-              >
+                <h1 className="text-5xl font-black text-blue-900 uppercase">
+                  Sorteo Oficial
+                </h1>
 
-                <option value="">
-                  Selecciona partido
-                </option>
+                <p className="text-red-600 text-2xl font-bold mt-2">
+                  Gol y Gana con Nuestra Selección
+                </p>
 
-                {partidos.map((partido) => (
+              </div>
 
-                  <option
-                    key={partido.id}
-                    value={partido.id}
-                  >
-                    {partido.equipo_a} vs {partido.equipo_b}
+            </div>
+
+            {/* FILTRO */}
+
+            <div className="p-8">
+
+              <div className="grid md:grid-cols-4 gap-5 mb-8">
+
+                <select
+                  value={partidoId}
+                  onChange={(e) =>
+                    setPartidoId(e.target.value)
+                  }
+                  className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
+                >
+
+                  <option value="">
+                    Selecciona partido
                   </option>
 
-                ))}
+                  {partidos.map((partido) => (
 
-              </select>
+                    <option
+                      key={partido.id}
+                      value={partido.id}
+                    >
+                      {partido.equipo_a}
+                      {' '}
+                      vs
+                      {' '}
+                      {partido.equipo_b}
+                    </option>
 
-              <input
-                type="number"
-                placeholder="Goles A"
-                value={marcadorA}
-                onChange={(e) => setMarcadorA(e.target.value)}
-                className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
-              />
+                  ))}
 
-              <input
-                type="number"
-                placeholder="Goles B"
-                value={marcadorB}
-                onChange={(e) => setMarcadorB(e.target.value)}
-                className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
-              />
+                </select>
+
+                <input
+                  type="number"
+                  placeholder="Goles A"
+                  value={marcadorA}
+                  onChange={(e) =>
+                    setMarcadorA(e.target.value)
+                  }
+                  className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
+                />
+
+                <input
+                  type="number"
+                  placeholder="Goles B"
+                  value={marcadorB}
+                  onChange={(e) =>
+                    setMarcadorB(e.target.value)
+                  }
+                  className="border-2 border-blue-900 rounded-2xl p-4 text-xl"
+                />
+
+                <button
+                  onClick={buscarAcertantes}
+                  className="bg-blue-900 text-white rounded-2xl text-2xl font-black"
+                >
+                  🔎 BUSCAR
+                </button>
+
+              </div>
+
+              {/* ACERTANTES */}
+
+              <div className="bg-yellow-100 border-2 border-yellow-400 rounded-3xl p-6 text-center mb-8">
+
+                <p className="text-4xl font-black text-blue-900">
+                  🎯 Acertantes encontrados
+                </p>
+
+                <p className="text-6xl font-black text-red-600 mt-4">
+                  {acertantes.length}
+                </p>
+
+              </div>
+
+              {/* PREMIOS */}
+
+              <div className="grid md:grid-cols-4 gap-5 mb-10">
+
+                <div className="bg-yellow-50 border-2 border-yellow-300 rounded-3xl p-5">
+
+                  <p className="text-2xl font-black text-center text-blue-900 mb-4">
+                    🧢 Gorras
+                  </p>
+
+                  <input
+                    type="number"
+                    value={cantidadGorras}
+                    onChange={(e) =>
+                      setCantidadGorras(
+                        Number(e.target.value)
+                      )
+                    }
+                    className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
+                  />
+
+                </div>
+
+                <div className="bg-blue-50 border-2 border-blue-300 rounded-3xl p-5">
+
+                  <p className="text-2xl font-black text-center text-blue-900 mb-4">
+                    👕 Camisas
+                  </p>
+
+                  <input
+                    type="number"
+                    value={cantidadCamisas}
+                    onChange={(e) =>
+                      setCantidadCamisas(
+                        Number(e.target.value)
+                      )
+                    }
+                    className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
+                  />
+
+                </div>
+
+                <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-5">
+
+                  <p className="text-2xl font-black text-center text-blue-900 mb-4">
+                    ⚽ Balones
+                  </p>
+
+                  <input
+                    type="number"
+                    value={cantidadBalones}
+                    onChange={(e) =>
+                      setCantidadBalones(
+                        Number(e.target.value)
+                      )
+                    }
+                    className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
+                  />
+
+                </div>
+
+                <div className="bg-gray-50 border-2 border-gray-300 rounded-3xl p-5">
+
+                  <p className="text-2xl font-black text-center text-blue-900 mb-4">
+                    🧃 Termos
+                  </p>
+
+                  <input
+                    type="number"
+                    value={cantidadTermos}
+                    onChange={(e) =>
+                      setCantidadTermos(
+                        Number(e.target.value)
+                      )
+                    }
+                    className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
+                  />
+
+                </div>
+
+              </div>
+
+              {/* BOTON */}
 
               <button
-                onClick={buscarAcertantes}
-                className="bg-blue-900 text-white rounded-2xl text-2xl font-black"
+                onClick={realizarSorteo}
+                className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-4xl font-black py-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
               >
-                🔎 BUSCAR
+                🎉 REALIZAR SORTEO
               </button>
 
             </div>
 
-            {/* ACERTANTES */}
+          </div>
 
-            <div className="bg-yellow-100 border-2 border-yellow-400 rounded-3xl p-6 text-center mb-8">
+          {/* RESULTADOS */}
 
-              <p className="text-4xl font-black text-blue-900">
-                🎯 Acertantes encontrados
-              </p>
+          <div className="grid gap-10">
 
-              <p className="text-6xl font-black text-red-600 mt-4">
-                {acertantes.length}
-              </p>
+            <TablaGanadores
+              titulo="Ganadores Gorras"
+              datos={ganadores.gorras}
+              color="bg-yellow-500"
+            />
 
-            </div>
+            <TablaGanadores
+              titulo="Ganadores Camisas"
+              datos={ganadores.camisas}
+              color="bg-blue-900"
+            />
 
-            {/* PREMIOS */}
+            <TablaGanadores
+              titulo="Ganadores Balones"
+              datos={ganadores.balones}
+              color="bg-red-600"
+            />
 
-            <div className="grid md:grid-cols-4 gap-5 mb-10">
-
-              <div className="bg-yellow-50 border-2 border-yellow-300 rounded-3xl p-5">
-
-                <p className="text-2xl font-black text-center text-blue-900 mb-4">
-                  🧢 Gorras
-                </p>
-
-                <input
-                  type="number"
-                  value={cantidadGorras}
-                  onChange={(e) =>
-                    setCantidadGorras(Number(e.target.value))
-                  }
-                  className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
-                />
-
-              </div>
-
-              <div className="bg-blue-50 border-2 border-blue-300 rounded-3xl p-5">
-
-                <p className="text-2xl font-black text-center text-blue-900 mb-4">
-                  👕 Camisas
-                </p>
-
-                <input
-                  type="number"
-                  value={cantidadCamisas}
-                  onChange={(e) =>
-                    setCantidadCamisas(Number(e.target.value))
-                  }
-                  className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
-                />
-
-              </div>
-
-              <div className="bg-red-50 border-2 border-red-300 rounded-3xl p-5">
-
-                <p className="text-2xl font-black text-center text-blue-900 mb-4">
-                  ⚽ Balones
-                </p>
-
-                <input
-                  type="number"
-                  value={cantidadBalones}
-                  onChange={(e) =>
-                    setCantidadBalones(Number(e.target.value))
-                  }
-                  className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
-                />
-
-              </div>
-
-              <div className="bg-gray-50 border-2 border-gray-300 rounded-3xl p-5">
-
-                <p className="text-2xl font-black text-center text-blue-900 mb-4">
-                  🧃 Termos
-                </p>
-
-                <input
-                  type="number"
-                  value={cantidadTermos}
-                  onChange={(e) =>
-                    setCantidadTermos(Number(e.target.value))
-                  }
-                  className="w-full border-2 border-blue-900 rounded-2xl p-4 text-3xl text-center font-black"
-                />
-
-              </div>
-
-            </div>
-
-            {/* BOTON */}
-
-            <button
-              onClick={realizarSorteo}
-              className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-4xl font-black py-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
-            >
-              🎉 REALIZAR SORTEO
-            </button>
+            <TablaGanadores
+              titulo="Ganadores Termos"
+              datos={ganadores.termos}
+              color="bg-gray-700"
+            />
 
           </div>
 
         </div>
 
-        {/* RESULTADOS */}
+      </main>
 
-        <div className="grid gap-10">
-
-          <TablaGanadores
-            titulo="Ganadores Gorras"
-            datos={ganadores.gorras}
-            color="bg-yellow-500"
-          />
-
-          <TablaGanadores
-            titulo="Ganadores Camisas"
-            datos={ganadores.camisas}
-            color="bg-blue-900"
-          />
-
-          <TablaGanadores
-            titulo="Ganadores Balones"
-            datos={ganadores.balones}
-            color="bg-red-600"
-          />
-
-          <TablaGanadores
-            titulo="Ganadores Termos"
-            datos={ganadores.termos}
-            color="bg-gray-700"
-          />
-
-        </div>
-
-      </div>
-
-    </main>
+    </AuthGuard>
   )
 }
