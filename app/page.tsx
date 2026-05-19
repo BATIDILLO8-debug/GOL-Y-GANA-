@@ -10,6 +10,7 @@ export default function Home() {
   const [nombre, setNombre] = useState('')
   const [celular, setCelular] = useState('')
   const [lugarResidencia, setLugarResidencia] = useState('')
+  const [otroLugar, setOtroLugar] = useState('')
 
   const [marcadorA, setMarcadorA] = useState('')
   const [marcadorB, setMarcadorB] = useState('')
@@ -31,6 +32,11 @@ export default function Home() {
   const [horas, setHoras] = useState('00')
   const [minutos, setMinutos] = useState('00')
   const [segundos, setSegundos] = useState('00')
+
+  const [mostrarReglamento, setMostrarReglamento] = useState(false)
+
+  const [mostrarExito, setMostrarExito] = useState(false)
+  const [codigoGenerado, setCodigoGenerado] = useState('')
 
   // GPS
 
@@ -144,6 +150,35 @@ export default function Home() {
 
   const guardarParticipacion = async () => {
 
+    if (
+      !cedula ||
+      !nombre ||
+      !celular ||
+      !lugarResidencia
+    ) {
+
+      alert('Completa todos los campos.')
+
+      return
+    }
+
+    if (celular.length !== 10) {
+
+      alert('El celular debe tener 10 dígitos.')
+
+      return
+    }
+
+    if (
+      marcadorA === '' ||
+      marcadorB === ''
+    ) {
+
+      alert('Debes indicar el marcador.')
+
+      return
+    }
+
     if (!aceptaReglamento || !aceptaDatos) {
 
       alert(
@@ -196,7 +231,10 @@ export default function Home() {
             cedula,
             nombre,
             celular,
-            lugar_residencia: lugarResidencia,
+            lugar_residencia:
+              lugarResidencia === 'OTROS'
+                ? otroLugar
+                : lugarResidencia,
             codigo,
           },
         ])
@@ -225,8 +263,8 @@ export default function Home() {
         {
           participante_id: participanteId,
           partido_id: partidoId,
-          marcador_a: marcadorA,
-          marcador_b: marcadorB,
+          marcador_a: Number(marcadorA),
+          marcador_b: Number(marcadorB),
           latitud: latitud,
           longitud: longitud,
         },
@@ -241,9 +279,9 @@ export default function Home() {
       return
     }
 
-    alert(
-      `✅ ¡Participación registrada! Código: ${codigo}`
-    )
+    setCodigoGenerado(codigo)
+
+    setMostrarExito(true)
 
     setMarcadorA('')
     setMarcadorB('')
@@ -261,6 +299,136 @@ export default function Home() {
       {/* CAPA OSCURA */}
 
       <div className="absolute inset-0 bg-black/40"></div>
+
+      {/* MODAL REGLAMENTO */}
+
+      {
+        mostrarReglamento && (
+
+          <div className="fixed inset-0 z-50 bg-black/70 flex justify-center items-center p-4">
+
+            <div className="bg-white rounded-3xl p-6 md:p-10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+
+              <h2 className="text-3xl md:text-5xl font-black text-blue-900 text-center mb-6">
+                📄 Reglamento Oficial
+              </h2>
+
+              <div className="space-y-4 text-gray-700 text-sm md:text-lg">
+
+                <p>
+                  • Solo podrán participar mayores de edad.
+                </p>
+
+                <p>
+                  • Solo se permite una participación por partido por número de cédula.
+                </p>
+
+                <p>
+                  • El participante acepta el tratamiento de datos personales.
+                </p>
+
+                <p>
+                  • El premio será entregado únicamente al titular registrado.
+                </p>
+
+                <p>
+                  • Los resultados oficiales serán publicados por la organización.
+                </p>
+
+                <p>
+                  • La participación implica aceptación total del reglamento.
+                </p>
+
+              </div>
+
+              <button
+                onClick={() =>
+                  setMostrarReglamento(false)
+                }
+                className="mt-8 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+              >
+                CERRAR
+              </button>
+
+            </div>
+
+          </div>
+
+        )
+      }
+
+      {/* MODAL EXITO */}
+
+      {
+        mostrarExito && (
+
+          <div className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4">
+
+            <div className="bg-white rounded-[35px] p-6 md:p-10 max-w-xl w-full text-center shadow-2xl">
+
+              <div className="flex justify-center mb-5">
+
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={180}
+                  height={180}
+                  className="w-32 md:w-44 h-auto"
+                />
+
+              </div>
+
+              <h2 className="text-3xl md:text-5xl font-black text-blue-900 uppercase">
+                ✅ Registro Exitoso
+              </h2>
+
+              <p className="mt-5 text-lg md:text-2xl text-gray-700">
+                Participante:
+              </p>
+
+              <p className="text-2xl md:text-4xl font-black text-red-600 uppercase mt-2">
+                {nombre}
+              </p>
+
+              <p className="mt-6 text-lg md:text-2xl text-gray-700">
+                Tu código oficial es:
+              </p>
+
+              <div className="bg-yellow-400 text-blue-900 text-5xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
+                {codigoGenerado}
+              </div>
+
+              <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
+
+                <p className="font-black uppercase">
+                  Amor por lo Nuestro
+                </p>
+
+                <p>
+                  Una iniciativa de Erik Dimingo
+                </p>
+
+                <p>
+                  Porque la selección nos une 🇨🇴
+                </p>
+
+              </div>
+
+              <button
+                onClick={() =>
+                  setMostrarExito(false)
+                }
+                className="mt-8 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+              >
+                FINALIZAR
+              </button>
+
+            </div>
+
+          </div>
+
+        )
+      }
 
       {/* CONTENEDOR */}
 
@@ -290,177 +458,59 @@ export default function Home() {
             Con Nuestra Selección
           </h2>
 
-          <div className="flex justify-center items-center gap-2 md:gap-4 mt-4 md:mt-5">
-
-            <div className="w-10 md:w-20 h-2 bg-yellow-400 rounded-full"></div>
-
-            <p className="text-yellow-600 text-sm md:text-2xl font-black uppercase text-center">
-              Amor por lo Nuestro
-            </p>
-
-            <div className="w-10 md:w-20 h-2 bg-red-500 rounded-full"></div>
-
-          </div>
-
-        </div>
-
-        {/* TITULO */}
-
-        <div className="bg-blue-900 text-white text-center py-4 md:py-5 text-xl md:text-3xl font-black uppercase">
-          Partido Activo
         </div>
 
         {/* CONTENIDO */}
 
         <div className="p-4 md:p-8">
 
-          {/* EQUIPOS */}
-
-          <div className="grid grid-cols-3 items-center text-center mb-8 gap-2">
-
-            <div>
-
-              <div className="text-4xl md:text-7xl mb-3">
-                🇨🇴
-              </div>
-
-              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase break-words">
-                {equipoA || 'Colombia'}
-              </p>
-
-            </div>
-
-            <div>
-
-              <div className="bg-red-600 text-white text-xl md:text-4xl font-black px-3 md:px-6 py-2 md:py-4 rounded-2xl inline-block shadow-xl">
-                VS
-              </div>
-
-            </div>
-
-            <div>
-
-              <div className="text-4xl md:text-7xl mb-3">
-                🇯🇵
-              </div>
-
-              <p className="text-lg md:text-4xl font-black text-blue-900 uppercase break-words">
-                {equipoB || 'Japón'}
-              </p>
-
-            </div>
-
-          </div>
-
-          {/* FECHA */}
-
-          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-4 md:p-8 shadow-xl mb-8">
-
-            <div className="text-center mb-5">
-
-              <p className="text-blue-900 font-black text-lg md:text-2xl">
-                📅 Cierre del formulario
-              </p>
-
-              <p className="text-red-600 text-2xl md:text-4xl font-black mt-2 break-words">
-                {fechaCierre || 'Por definir'}
-              </p>
-
-            </div>
-
-            <p className="text-center text-blue-900 text-lg md:text-2xl font-black mb-5 uppercase">
-              Faltan para cerrar
-            </p>
-
-            {/* CONTADOR */}
-
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-
-              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
-
-                <p className="text-3xl md:text-5xl font-black">
-                  {dias}
-                </p>
-
-                <p className="text-xs md:text-lg uppercase font-bold mt-1">
-                  Días
-                </p>
-
-              </div>
-
-              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
-
-                <p className="text-3xl md:text-5xl font-black">
-                  {horas}
-                </p>
-
-                <p className="text-xs md:text-lg uppercase font-bold mt-1">
-                  Horas
-                </p>
-
-              </div>
-
-              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
-
-                <p className="text-3xl md:text-5xl font-black">
-                  {minutos}
-                </p>
-
-                <p className="text-xs md:text-lg uppercase font-bold mt-1">
-                  Min
-                </p>
-
-              </div>
-
-              <div className="bg-blue-900 rounded-2xl p-3 md:p-5 text-center text-white shadow-xl">
-
-                <p className="text-3xl md:text-5xl font-black">
-                  {segundos}
-                </p>
-
-                <p className="text-xs md:text-lg uppercase font-bold mt-1">
-                  Seg
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
           <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-8">
-            🎯 Indica el marcador exacto del partido y participa por premios oficiales.
+            Registra tu número de cédula de ciudadanía, nombre y apellidos, celular y lugar de domicilio.
           </p>
 
           {/* FORMULARIO */}
 
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-4">
 
             <input
               type="text"
-              placeholder="Ingresa tu cédula"
+              placeholder="Número de cédula"
               value={cedula}
               onChange={(e) => {
-                setCedula(e.target.value)
-                buscarParticipante(e.target.value)
+
+                const valor =
+                  e.target.value.replace(/\D/g, '')
+
+                setCedula(valor)
+
+                buscarParticipante(valor)
               }}
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
             />
 
             <input
               type="text"
-              placeholder="Ingresa tu nombre completo"
+              placeholder="Nombre y apellidos"
               value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
+              onChange={(e) =>
+                setNombre(e.target.value)
+              }
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
             />
 
             <input
               type="text"
-              placeholder="Ingresa tu número de celular"
+              placeholder="Celular"
               value={celular}
-              onChange={(e) => setCelular(e.target.value)}
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
+              maxLength={10}
+              onChange={(e) => {
+
+                const valor =
+                  e.target.value.replace(/\D/g, '')
+
+                setCelular(valor)
+              }}
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
             />
 
             <select
@@ -468,11 +518,11 @@ export default function Home() {
               onChange={(e) =>
                 setLugarResidencia(e.target.value)
               }
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 md:p-6 text-lg md:text-2xl"
+              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
             >
 
               <option value="">
-                Selecciona tu lugar de residencia
+                Lugar de residencia
               </option>
 
               <option>Cabecera Municipal</option>
@@ -487,40 +537,65 @@ export default function Home() {
               <option>Giramena</option>
               <option>San José de las Palomas</option>
               <option>La Nena</option>
+              <option>OTROS</option>
 
             </select>
 
+            {
+              lugarResidencia === 'OTROS' && (
+
+                <input
+                  type="text"
+                  placeholder="Escribe tu lugar de residencia"
+                  value={otroLugar}
+                  onChange={(e) =>
+                    setOtroLugar(e.target.value)
+                  }
+                  className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
+                />
+
+              )
+            }
+
           </div>
+
+          {/* TEXTO MARCADOR */}
+
+          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mt-10 mb-8">
+            🎯 Indica el marcador exacto del partido y participa por premios oficiales.
+          </p>
 
           {/* MARCADOR */}
 
-          <div className="grid grid-cols-2 gap-3 md:gap-8 mt-8 mb-8">
+          <div className="grid grid-cols-2 gap-4">
 
             <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
 
-              <div className="bg-yellow-400 py-3 text-center px-2">
+              <div className="bg-yellow-400 py-3 text-center">
 
-                <p className="text-blue-900 text-sm md:text-3xl font-black uppercase break-words">
+                <p className="text-blue-900 text-lg md:text-3xl font-black uppercase">
                   {equipoA || 'Colombia'}
                 </p>
 
               </div>
 
-              <div className="p-3 md:p-6">
+              <div className="p-4">
 
                 <input
                   type="number"
+                  min="0"
                   value={marcadorA}
-                  onChange={(e) =>
-                    setMarcadorA(e.target.value)
-                  }
-                  placeholder="0"
-                  className="w-full h-20 md:h-36 text-center text-3xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
-                />
+                  onChange={(e) => {
 
-                <p className="text-center text-xs md:text-lg text-gray-700 mt-3">
-                  Goles de {equipoA || 'Colombia'}
-                </p>
+                    if (
+                      Number(e.target.value) < 0
+                    ) return
+
+                    setMarcadorA(e.target.value)
+                  }}
+                  placeholder="0"
+                  className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                />
 
               </div>
 
@@ -528,29 +603,31 @@ export default function Home() {
 
             <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
 
-              <div className="bg-blue-900 py-3 text-center px-2">
+              <div className="bg-blue-900 py-3 text-center">
 
-                <p className="text-white text-sm md:text-3xl font-black uppercase break-words">
+                <p className="text-white text-lg md:text-3xl font-black uppercase">
                   {equipoB || 'Japón'}
                 </p>
 
               </div>
 
-              <div className="p-3 md:p-6">
+              <div className="p-4">
 
                 <input
                   type="number"
+                  min="0"
                   value={marcadorB}
-                  onChange={(e) =>
-                    setMarcadorB(e.target.value)
-                  }
-                  placeholder="0"
-                  className="w-full h-20 md:h-36 text-center text-3xl md:text-7xl font-black border-2 border-gray-300 rounded-2xl"
-                />
+                  onChange={(e) => {
 
-                <p className="text-center text-xs md:text-lg text-gray-700 mt-3">
-                  Goles de {equipoB || 'Japón'}
-                </p>
+                    if (
+                      Number(e.target.value) < 0
+                    ) return
+
+                    setMarcadorB(e.target.value)
+                  }}
+                  placeholder="0"
+                  className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                />
 
               </div>
 
@@ -560,11 +637,11 @@ export default function Home() {
 
           {/* CHECKS */}
 
-          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mb-8">
+          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mt-10 mb-8">
 
             <div className="space-y-6">
 
-              <label className="flex items-start gap-3 text-sm md:text-2xl text-gray-800 font-semibold leading-snug">
+              <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
 
                 <input
                   type="checkbox"
@@ -581,7 +658,7 @@ export default function Home() {
 
               </label>
 
-              <label className="flex items-start gap-3 text-sm md:text-2xl text-gray-800 font-semibold leading-snug">
+              <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
 
                 <input
                   type="checkbox"
@@ -602,12 +679,14 @@ export default function Home() {
 
             <div className="text-center mt-6">
 
-              <a
-                href="#"
-                className="text-blue-700 font-black underline text-base md:text-2xl"
+              <button
+                onClick={() =>
+                  setMostrarReglamento(true)
+                }
+                className="text-blue-700 font-black underline text-lg md:text-2xl"
               >
                 📄 Ver reglamento oficial
-              </a>
+              </button>
 
             </div>
 
@@ -617,7 +696,7 @@ export default function Home() {
 
           <button
             onClick={guardarParticipacion}
-            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-xl md:text-5xl font-black py-4 md:py-7 rounded-3xl shadow-2xl"
+            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-2xl md:text-5xl font-black py-5 rounded-3xl shadow-2xl"
           >
             🏆 PARTICIPAR
           </button>
