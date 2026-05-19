@@ -91,7 +91,9 @@ export default function Home() {
         return
       }
 
-      const d = Math.floor(diferencia / (1000 * 60 * 60 * 24))
+      const d = Math.floor(
+        diferencia / (1000 * 60 * 60 * 24)
+      )
 
       const h = Math.floor(
         (diferencia / (1000 * 60 * 60)) % 24
@@ -319,6 +321,8 @@ export default function Home() {
 
         <div className="p-8">
 
+          {/* EQUIPOS */}
+
           <div className="grid grid-cols-3 items-center text-center mb-8">
 
             <div>
@@ -351,6 +355,8 @@ export default function Home() {
 
           </div>
 
+          {/* FECHA */}
+
           <div className="bg-yellow-50 border-4 border-yellow-300 rounded-3xl p-8 shadow-xl mb-10">
 
             <div className="text-center mb-6">
@@ -372,51 +378,23 @@ export default function Home() {
             <div className="grid grid-cols-4 gap-4">
 
               <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-
-                <p className="text-5xl font-black">
-                  {dias}
-                </p>
-
-                <p className="text-lg uppercase font-bold mt-2">
-                  Días
-                </p>
-
+                <p className="text-5xl font-black">{dias}</p>
+                <p className="text-lg uppercase font-bold mt-2">Días</p>
               </div>
 
               <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-
-                <p className="text-5xl font-black">
-                  {horas}
-                </p>
-
-                <p className="text-lg uppercase font-bold mt-2">
-                  Horas
-                </p>
-
+                <p className="text-5xl font-black">{horas}</p>
+                <p className="text-lg uppercase font-bold mt-2">Horas</p>
               </div>
 
               <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-
-                <p className="text-5xl font-black">
-                  {minutos}
-                </p>
-
-                <p className="text-lg uppercase font-bold mt-2">
-                  Minutos
-                </p>
-
+                <p className="text-5xl font-black">{minutos}</p>
+                <p className="text-lg uppercase font-bold mt-2">Minutos</p>
               </div>
 
               <div className="bg-blue-900 rounded-2xl p-5 text-center text-white shadow-xl">
-
-                <p className="text-5xl font-black">
-                  {segundos}
-                </p>
-
-                <p className="text-lg uppercase font-bold mt-2">
-                  Segundos
-                </p>
-
+                <p className="text-5xl font-black">{segundos}</p>
+                <p className="text-lg uppercase font-bold mt-2">Segundos</p>
               </div>
 
             </div>
@@ -427,13 +405,196 @@ export default function Home() {
             🎯 Indica el marcador exacto del partido y participa por premios oficiales.
           </p>
 
-          {/* AQUÍ SIGUE EXACTAMENTE EL RESTO DE TU JSX ORIGINAL */}
-          
+          {/* FORMULARIO */}
+
+          <div className="space-y-6">
+
+            <input
+              type="text"
+              placeholder="Ingresa tu cédula"
+              value={cedula}
+              onChange={(e) => {
+                setCedula(e.target.value)
+                buscarParticipante(e.target.value)
+              }}
+              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+            />
+
+            <input
+              type="text"
+              placeholder="Ingresa tu nombre completo"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+            />
+
+            <input
+              type="text"
+              placeholder="Ingresa tu número de celular"
+              value={celular}
+              onChange={(e) => setCelular(e.target.value)}
+              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+            />
+
+            <select
+              value={lugarResidencia}
+              onChange={(e) =>
+                setLugarResidencia(e.target.value)
+              }
+              className="w-full border-2 border-gray-300 rounded-2xl p-6 text-2xl"
+            >
+
+              <option value="">
+                Selecciona tu lugar de residencia
+              </option>
+
+              <option>Cabecera Municipal</option>
+              <option>Surimena</option>
+              <option>Pajure</option>
+              <option>Palmeras</option>
+              <option>Palomas</option>
+              <option>Peñuelas</option>
+              <option>El Barro</option>
+              <option>Mi Viejo San Juan</option>
+              <option>Isla Capri</option>
+              <option>Giramena</option>
+              <option>San José de las Palomas</option>
+              <option>La Nena</option>
+
+            </select>
+
+          </div>
+
+          {/* MARCADOR */}
+
+          <div className="grid grid-cols-2 gap-8 mt-10 mb-10">
+
+            <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
+
+              <div className="bg-yellow-400 py-4 text-center">
+
+                <p className="text-blue-900 text-3xl font-black uppercase">
+                  {equipoA || 'Colombia'}
+                </p>
+
+              </div>
+
+              <div className="p-6">
+
+                <input
+                  type="number"
+                  value={marcadorA}
+                  onChange={(e) =>
+                    setMarcadorA(e.target.value)
+                  }
+                  placeholder="0"
+                  className="w-full h-36 text-center text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                />
+
+                <p className="text-center text-lg text-gray-700 mt-4">
+                  Goles de {equipoA || 'Colombia'}
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
+
+              <div className="bg-blue-900 py-4 text-center">
+
+                <p className="text-white text-3xl font-black uppercase">
+                  {equipoB || 'Japón'}
+                </p>
+
+              </div>
+
+              <div className="p-6">
+
+                <input
+                  type="number"
+                  value={marcadorB}
+                  onChange={(e) =>
+                    setMarcadorB(e.target.value)
+                  }
+                  placeholder="0"
+                  className="w-full h-36 text-center text-7xl font-black border-2 border-gray-300 rounded-2xl"
+                />
+
+                <p className="text-center text-lg text-gray-700 mt-4">
+                  Goles de {equipoB || 'Japón'}
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* CHECKS */}
+
+          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-8 mb-10">
+
+            <div className="space-y-5">
+
+              <label className="flex items-center gap-4 text-2xl">
+
+                <input
+                  type="checkbox"
+                  checked={aceptaReglamento}
+                  onChange={(e) =>
+                    setAceptaReglamento(e.target.checked)
+                  }
+                  className="w-6 h-6"
+                />
+
+                Acepto el reglamento interno
+
+              </label>
+
+              <label className="flex items-center gap-4 text-2xl">
+
+                <input
+                  type="checkbox"
+                  checked={aceptaDatos}
+                  onChange={(e) =>
+                    setAceptaDatos(e.target.checked)
+                  }
+                  className="w-6 h-6"
+                />
+
+                Acepto la política de tratamiento de datos
+
+              </label>
+
+            </div>
+
+            <div className="text-center mt-8">
+
+              <a
+                href="#"
+                className="text-blue-700 font-black underline text-2xl"
+              >
+                📄 Ver reglamento oficial
+              </a>
+
+            </div>
+
+          </div>
+
+          {/* BOTON */}
+
+          <button
+            onClick={guardarParticipacion}
+            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-5xl font-black py-7 rounded-3xl shadow-2xl"
+          >
+            🏆 PARTICIPAR
+          </button>
+
         </div>
 
       </div>
 
     </main>
-
   )
 }
