@@ -360,78 +360,72 @@ export default function Home() {
 
       {/* MODAL EXITO */}
 
-      {
-        mostrarExito && (
+{mostrarExito && (
+  <div className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4">
 
-          <div className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4">
+    <div className="bg-white rounded-[35px] p-6 md:p-10 max-w-xl w-full text-center shadow-2xl">
 
-            <div className="bg-white rounded-[35px] p-6 md:p-10 max-w-xl w-full text-center shadow-2xl">
+      <div className="flex justify-center mb-5">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={180}
+          height={180}
+          className="w-32 md:w-44 h-auto"
+        />
+      </div>
 
-              <div className="flex justify-center mb-5">
+      <h2 className="text-3xl md:text-5xl font-black text-blue-900 uppercase">
+        ✅ Registro Exitoso
+      </h2>
 
-                <Image
-                  src="/logo.png"
-                  alt="Logo"
-                  width={180}
-                  height={180}
-                  className="w-32 md:w-44 h-auto"
-                />
+      <p className="mt-5 text-lg md:text-2xl text-gray-700">
+        Participante:
+      </p>
 
-              </div>
+      <p className="text-2xl md:text-4xl font-black text-red-600 uppercase mt-2">
+        {nombre}
+      </p>
 
-              <h2 className="text-3xl md:text-5xl font-black text-blue-900 uppercase">
-                ✅ Registro Exitoso
-              </h2>
+      <p className="mt-6 text-lg md:text-2xl text-gray-700">
+        Tu código oficial es:
+      </p>
 
-              <p className="mt-5 text-lg md:text-2xl text-gray-700">
-                Participante:
-              </p>
+      <div className="bg-yellow-400 text-blue-900 text-5xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
+        {codigoGenerado}
+      </div>
 
-              <p className="text-2xl md:text-4xl font-black text-red-600 uppercase mt-2">
-                {nombre}
-              </p>
+      <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
 
-              <p className="mt-6 text-lg md:text-2xl text-gray-700">
-                Tu código oficial es:
-              </p>
+        <p className="font-black uppercase">
+          Amor por lo Nuestro
+        </p>
 
-              <div className="bg-yellow-400 text-blue-900 text-5xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
-                {codigoGenerado}
-              </div>
+        <p>
+          Una iniciativa de Erik Dimingo
+        </p>
 
-              <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
+        <p>
+          Porque la selección nos une 🇨🇴
+        </p>
 
-                <p className="font-black uppercase">
-                  Amor por lo Nuestro
-                </p>
+      </div>
 
-                <p>
-                  Una iniciativa de Erik Dimingo
-                </p>
+      <div className="mt-6">
+        <InstallAppButton />
+      </div>
 
-                <p>
-                  Porque la selección nos une 🇨🇴
-                </p>
+      <button
+        onClick={() => setMostrarExito(false)}
+        className="mt-4 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+      >
+        FINALIZAR
+      </button>
 
-                <div className="mt-6">
-                  <InstallAppButton />
-                </div>
+    </div>
 
-                <button
-                  onClick={() =>
-                    setMostrarExito(false)
-                  }
-                  className="mt-4 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
-                >
-                  FINALIZAR
-                </button>
-
-              </div>
-
-            </div>
-
-            )}
-
+  </div>
+)}
             {/* CONTENEDOR */}
 
             <div className="relative bg-white rounded-[25px] md:rounded-[35px] shadow-2xl w-full max-w-2xl overflow-hidden border-[4px] md:border-[6px] border-blue-900">
