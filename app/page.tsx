@@ -413,299 +413,300 @@ export default function Home() {
                   Porque la selección nos une 🇨🇴
                 </p>
 
-              </div>
+                <div className="mt-6">
+                  <InstallAppButton />
+                </div>
 
-              <button
-                onClick={() =>
-                  setMostrarExito(false)
-                }
-                className="mt-8 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
-              >
-                FINALIZAR
-              </button>
+                <button
+                  onClick={() =>
+                    setMostrarExito(false)
+                  }
+                  className="mt-4 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+                >
+                  FINALIZAR
+                </button>
+
+              </div>
 
             </div>
 
-          </div>
+            )}
 
+            {/* CONTENEDOR */}
+
+            <div className="relative bg-white rounded-[25px] md:rounded-[35px] shadow-2xl w-full max-w-2xl overflow-hidden border-[4px] md:border-[6px] border-blue-900">
+
+              {/* HEADER */}
+
+              <div className="bg-white p-4 md:p-8">
+
+                <div className="flex justify-center">
+
+                  <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    width={280}
+                    height={280}
+                    className="w-44 md:w-72 h-auto"
+                  />
+
+                </div>
+
+                <h1 className="text-3xl md:text-6xl font-black text-center text-blue-900 uppercase leading-none">
+                  Gol y Gana
+                </h1>
+
+                <h2 className="text-center text-xl md:text-4xl font-black text-red-600 uppercase mt-2">
+                  Con Nuestra Selección
+                </h2>
+
+              </div>
+
+              {/* CONTENIDO */}
+
+              <div className="p-4 md:p-8">
+
+                <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-8">
+                  Registra tu número de cédula de ciudadanía, nombre y apellidos, celular y lugar de domicilio.
+                </p>
+
+                {/* FORMULARIO */}
+
+                <div className="space-y-4">
+
+                  <input
+                    type="text"
+                    placeholder="Número de cédula"
+                    value={cedula}
+                    onChange={(e) => {
+
+                      const valor =
+                        e.target.value.replace(/\D/g, '')
+
+                      setCedula(valor)
+
+                      buscarParticipante(valor)
+                    }}
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Nombre y apellidos"
+                    value={nombre}
+                    onChange={(e) =>
+                      setNombre(e.target.value)
+                    }
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Celular"
+                    value={celular}
+                    maxLength={10}
+                    onChange={(e) => {
+
+                      const valor =
+                        e.target.value.replace(/\D/g, '')
+
+                      setCelular(valor)
+                    }}
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                  />
+
+                  <select
+                    value={lugarResidencia}
+                    onChange={(e) =>
+                      setLugarResidencia(e.target.value)
+                    }
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold text-gray-700"
+                  >
+
+                    <option value="">
+                      Lugar de residencia
+                    </option>
+
+                    <option>Cabecera Municipal</option>
+                    <option>Surimena</option>
+                    <option>Pajure</option>
+                    <option>Palmeras</option>
+                    <option>Palomas</option>
+                    <option>Peñuelas</option>
+                    <option>El Barro</option>
+                    <option>Mi Viejo San Juan</option>
+                    <option>Isla Capri</option>
+                    <option>Giramena</option>
+                    <option>San José de las Palomas</option>
+                    <option>La Nena</option>
+                    <option>OTROS</option>
+
+                  </select>
+
+                  {
+                    lugarResidencia === 'OTROS' && (
+
+                      <input
+                        type="text"
+                        placeholder="Escribe tu lugar de residencia"
+                        value={otroLugar}
+                        onChange={(e) =>
+                          setOtroLugar(e.target.value)
+                        }
+                        className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
+                      />
+
+                    )
+                  }
+
+                </div>
+
+                {/* TEXTO MARCADOR */}
+
+                <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mt-10 mb-8">
+                  🎯 Indica el marcador exacto del partido y participa por premios oficiales.
+                </p>
+
+                {/* MARCADOR */}
+
+                <div className="grid grid-cols-2 gap-4">
+
+                  <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
+
+                    <div className="bg-yellow-400 py-3 text-center">
+
+                      <p className="text-blue-900 text-lg md:text-3xl font-black uppercase">
+                        {equipoA || 'Colombia'}
+                      </p>
+
+                    </div>
+
+                    <div className="p-4">
+
+                      <input
+                        type="number"
+                        min="0"
+                        value={marcadorA}
+                        onChange={(e) => {
+
+                          if (
+                            Number(e.target.value) < 0
+                          ) return
+
+                          setMarcadorA(e.target.value)
+                        }}
+                        placeholder=""
+                        className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
+
+                    <div className="bg-blue-900 py-3 text-center">
+
+                      <p className="text-white text-lg md:text-3xl font-black uppercase">
+                        {equipoB || 'Japón'}
+                      </p>
+
+                    </div>
+
+                    <div className="p-4">
+
+                      <input
+                        type="number"
+                        min="0"
+                        value={marcadorB}
+                        onChange={(e) => {
+
+                          if (
+                            Number(e.target.value) < 0
+                          ) return
+
+                          setMarcadorB(e.target.value)
+                        }}
+                        placeholder=""
+                        className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                      />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* CHECKS */}
+
+                <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mt-10 mb-8">
+
+                  <div className="space-y-6">
+
+                    <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
+
+                      <input
+                        type="checkbox"
+                        checked={aceptaReglamento}
+                        onChange={(e) =>
+                          setAceptaReglamento(e.target.checked)
+                        }
+                        className="w-5 h-5 mt-1"
+                      />
+
+                      <span>
+                        Acepto el reglamento interno
+                      </span>
+
+                    </label>
+
+                    <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
+
+                      <input
+                        type="checkbox"
+                        checked={aceptaDatos}
+                        onChange={(e) =>
+                          setAceptaDatos(e.target.checked)
+                        }
+                        className="w-5 h-5 mt-1"
+                      />
+
+                      <span>
+                        Acepto la política de tratamiento de datos
+                      </span>
+
+                    </label>
+
+                  </div>
+
+                  <div className="text-center mt-6">
+
+                    <button
+                      onClick={() =>
+                        setMostrarReglamento(true)
+                      }
+                      className="text-blue-700 font-black underline text-lg md:text-2xl"
+                    >
+                      📄 Ver reglamento oficial
+                    </button>
+
+                  </div>
+
+                </div>
+
+                {/* BOTON */}
+
+                <button
+                  onClick={guardarParticipacion}
+                  className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-2xl md:text-5xl font-black py-5 rounded-3xl shadow-2xl"
+                >
+                  🏆 PARTICIPAR
+                </button>
+
+              </div>
+
+            </div>
+
+          </main>
         )
       }
-
-      {/* CONTENEDOR */}
-
-      <div className="relative bg-white rounded-[25px] md:rounded-[35px] shadow-2xl w-full max-w-2xl overflow-hidden border-[4px] md:border-[6px] border-blue-900">
-
-        {/* HEADER */}
-
-        <div className="bg-white p-4 md:p-8">
-
-          <div className="flex justify-center">
-
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={280}
-              height={280}
-              className="w-44 md:w-72 h-auto"
-            />
-
-          </div>
-
-          <h1 className="text-3xl md:text-6xl font-black text-center text-blue-900 uppercase leading-none">
-            Gol y Gana
-          </h1>
-
-          <h2 className="text-center text-xl md:text-4xl font-black text-red-600 uppercase mt-2">
-            Con Nuestra Selección
-          </h2>
-
-        </div>
-
-        {/* CONTENIDO */}
-
-        <div className="p-4 md:p-8">
-
-          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-8">
-            Registra tu número de cédula de ciudadanía, nombre y apellidos, celular y lugar de domicilio.
-          </p>
-
-          {/* FORMULARIO */}
-
-          <div className="space-y-4">
-
-            <input
-              type="text"
-              placeholder="Número de cédula"
-              value={cedula}
-              onChange={(e) => {
-
-                const valor =
-                  e.target.value.replace(/\D/g, '')
-
-                setCedula(valor)
-
-                buscarParticipante(valor)
-              }}
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
-            />
-
-            <input
-              type="text"
-              placeholder="Nombre y apellidos"
-              value={nombre}
-              onChange={(e) =>
-                setNombre(e.target.value)
-              }
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
-            />
-
-            <input
-              type="text"
-              placeholder="Celular"
-              value={celular}
-              maxLength={10}
-              onChange={(e) => {
-
-                const valor =
-                  e.target.value.replace(/\D/g, '')
-
-                setCelular(valor)
-              }}
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
-            />
-
-            <select
-              value={lugarResidencia}
-              onChange={(e) =>
-                setLugarResidencia(e.target.value)
-              }
-              className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
-            >
-
-              <option value="">
-                Lugar de residencia
-              </option>
-
-              <option>Cabecera Municipal</option>
-              <option>Surimena</option>
-              <option>Pajure</option>
-              <option>Palmeras</option>
-              <option>Palomas</option>
-              <option>Peñuelas</option>
-              <option>El Barro</option>
-              <option>Mi Viejo San Juan</option>
-              <option>Isla Capri</option>
-              <option>Giramena</option>
-              <option>San José de las Palomas</option>
-              <option>La Nena</option>
-              <option>OTROS</option>
-
-            </select>
-
-            {
-              lugarResidencia === 'OTROS' && (
-
-                <input
-                  type="text"
-                  placeholder="Escribe tu lugar de residencia"
-                  value={otroLugar}
-                  onChange={(e) =>
-                    setOtroLugar(e.target.value)
-                  }
-                  className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
-                />
-
-              )
-            }
-
-          </div>
-
-          {/* TEXTO MARCADOR */}
-
-          <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mt-10 mb-8">
-            🎯 Indica el marcador exacto del partido y participa por premios oficiales.
-          </p>
-
-          {/* MARCADOR */}
-
-          <div className="grid grid-cols-2 gap-4">
-
-            <div className="bg-yellow-50 rounded-3xl overflow-hidden shadow-xl border-2 border-yellow-300">
-
-              <div className="bg-yellow-400 py-3 text-center">
-
-                <p className="text-blue-900 text-lg md:text-3xl font-black uppercase">
-                  {equipoA || 'Colombia'}
-                </p>
-
-              </div>
-
-              <div className="p-4">
-
-                <input
-                  type="number"
-                  min="0"
-                  value={marcadorA}
-                  onChange={(e) => {
-
-                    if (
-                      Number(e.target.value) < 0
-                    ) return
-
-                    setMarcadorA(e.target.value)
-                  }}
-                  placeholder="0"
-                  className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
-                />
-
-              </div>
-
-            </div>
-
-            <div className="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-blue-900">
-
-              <div className="bg-blue-900 py-3 text-center">
-
-                <p className="text-white text-lg md:text-3xl font-black uppercase">
-                  {equipoB || 'Japón'}
-                </p>
-
-              </div>
-
-              <div className="p-4">
-
-                <input
-                  type="number"
-                  min="0"
-                  value={marcadorB}
-                  onChange={(e) => {
-
-                    if (
-                      Number(e.target.value) < 0
-                    ) return
-
-                    setMarcadorB(e.target.value)
-                  }}
-                  placeholder="0"
-                  className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
-                />
-
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* CHECKS */}
-
-          <div className="bg-blue-50 rounded-3xl border-2 border-blue-200 p-4 md:p-8 mt-10 mb-8">
-
-            <div className="space-y-6">
-
-              <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
-
-                <input
-                  type="checkbox"
-                  checked={aceptaReglamento}
-                  onChange={(e) =>
-                    setAceptaReglamento(e.target.checked)
-                  }
-                  className="w-5 h-5 mt-1"
-                />
-
-                <span>
-                  Acepto el reglamento interno
-                </span>
-
-              </label>
-
-              <label className="flex items-start gap-3 text-sm md:text-xl text-gray-800 font-semibold">
-
-                <input
-                  type="checkbox"
-                  checked={aceptaDatos}
-                  onChange={(e) =>
-                    setAceptaDatos(e.target.checked)
-                  }
-                  className="w-5 h-5 mt-1"
-                />
-
-                <span>
-                  Acepto la política de tratamiento de datos
-                </span>
-
-              </label>
-
-            </div>
-
-            <div className="text-center mt-6">
-
-              <button
-                onClick={() =>
-                  setMostrarReglamento(true)
-                }
-                className="text-blue-700 font-black underline text-lg md:text-2xl"
-              >
-                📄 Ver reglamento oficial
-              </button>
-
-            </div>
-
-          </div>
-
-          {/* BOTON */}
-
-          <button
-            onClick={guardarParticipacion}
-            className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:scale-105 transition-all text-white text-2xl md:text-5xl font-black py-5 rounded-3xl shadow-2xl"
-          >
-            🏆 PARTICIPAR
-          </button>
-
-        </div>
-
-      </div>
-
-    </main>
-  )
-}
