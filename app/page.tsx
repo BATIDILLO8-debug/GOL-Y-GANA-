@@ -394,6 +394,17 @@ export default function Home() {
       <div className="bg-yellow-400 text-blue-900 text-5xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
         {codigoGenerado}
       </div>
+      <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
+
+        <p className="text-red-700 text-xl md:text-2xl font-black">
+         ⚠️ Guarda este código
+        </p>
+
+         <p className="text-gray-700 mt-2 text-sm md:text-lg">
+           Será solicitado para reclamar premios y verificar tu participación.
+         </p>
+
+       </div>
 
       <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
 
@@ -411,12 +422,43 @@ export default function Home() {
 
       </div>
 
-      <div className="mt-6">
-        <InstallAppButton />
-      </div>
+      <div className="mt-8">
+
+  <p className="text-blue-900 font-black text-xl md:text-3xl mb-4">
+    📲 Instala la App
+  </p>
+
+  <div className="text-gray-700 text-sm md:text-lg space-y-1 mb-6">
+
+    <p>• Consulta ganadores</p>
+    <p>• Consulta resultados</p>
+    <p>• Consulta nuevos partidos</p>
+    <p>• Participa en próximos sorteos</p>
+
+  </div>
+
+  <InstallAppButton />
+
+</div>
 
       <button
-        onClick={() => setMostrarExito(false)}
+  onClick={() => {
+
+    setMostrarExito(false)
+
+    setCedula('')
+    setNombre('')
+    setCelular('')
+    setLugarResidencia('')
+    setOtroLugar('')
+
+    setMarcadorA('')
+    setMarcadorB('')
+
+    setAceptaDatos(false)
+    setAceptaReglamento(false)
+
+  }}
         className="mt-4 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
       >
         FINALIZAR
