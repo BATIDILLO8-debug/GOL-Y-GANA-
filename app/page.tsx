@@ -516,6 +516,7 @@ const consultarReferidos = async () => {
 <div className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4 flex justify-center items-start">
 
     <div className="bg-white rounded-[35px] p-5 md:p-10 max-w-xl w-full text-center shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-center mb-5"></div>
     <Image
       src="/logo.png"
       alt="Logo"
