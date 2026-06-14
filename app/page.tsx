@@ -710,7 +710,52 @@ const cargarRanking = async (
   </div>
 
 )}
+{ranking.length > 0 && (
 
+  <div className="mt-6 bg-white border-2 border-yellow-300 rounded-2xl p-4">
+
+    <h3 className="text-xl font-black text-center text-yellow-700 mb-4">
+
+      🏆 TOP PROMOTORES
+
+    </h3>
+
+    {ranking.map((item, index) => (
+
+      <div
+        key={index}
+        className="flex justify-between items-center border-b py-2"
+      >
+
+        <div>
+
+          <span className="font-black">
+
+            {index === 0 && '🥇 '}
+            {index === 1 && '🥈 '}
+            {index === 2 && '🥉 '}
+
+            {index > 2 && `#${index + 1} `}
+
+          </span>
+
+          {item.nombre}
+
+        </div>
+
+        <div className="font-black text-blue-900">
+
+          {item.total}
+
+        </div>
+
+      </div>
+
+    ))}
+
+  </div>
+
+)}
 <button
   onClick={() => {
 
