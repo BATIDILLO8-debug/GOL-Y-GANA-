@@ -523,7 +523,7 @@ export default function Home() {
 
                       buscarParticipante(valor)
                     }}
-                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold text-black placeholder:text-gray-400"
                   />
 
                   <input
@@ -533,7 +533,7 @@ export default function Home() {
                     onChange={(e) =>
                       setNombre(e.target.value)
                     }
-                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold text-black placeholder:text-gray-400"
                   />
 
                   <input
@@ -548,7 +548,7 @@ export default function Home() {
 
                       setCelular(valor)
                     }}
-                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold placeholder:text-gray-500"
+                    className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold text-black placeholder:text-gray-400"
                   />
 
                   <select
@@ -589,7 +589,7 @@ export default function Home() {
                         onChange={(e) =>
                           setOtroLugar(e.target.value)
                         }
-                        className="w-full border-2 border-gray-300 rounded-2xl p-4 text-lg"
+                        className="w-full border-2 border-gray-400 rounded-2xl p-5 text-xl font-semibold text-black placeholder:text-gray-400"
                       />
 
                     )
