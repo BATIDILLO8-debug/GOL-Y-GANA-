@@ -310,7 +310,7 @@ export default function Home() {
 
             <div className="bg-white rounded-3xl p-6 md:p-10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
 
-              <h2 className="text-3xl md:text-5xl font-black text-blue-900 text-center mb-6">
+              <h2 className="text-2xl md:text-5xl font-black text-blue-900 text-center mb-6">
                 📄 Reglamento Oficial
               </h2>
 
@@ -363,7 +363,7 @@ export default function Home() {
 {mostrarExito && (
   <div className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center p-4">
 
-    <div className="bg-white rounded-[35px] p-6 md:p-10 max-w-xl w-full text-center shadow-2xl">
+    <div className="bg-white rounded-[35px] p-6 md:p-10 max-w-lg w-full text-center shadow-2xl">
 
       <div className="flex justify-center mb-5">
         <Image
@@ -375,7 +375,7 @@ export default function Home() {
         />
       </div>
 
-      <h2 className="text-3xl md:text-5xl font-black text-blue-900 uppercase">
+      <h2 className="text-2xl md:text-5xl font-black text-blue-900 uppercase">
         ✅ Registro Exitoso
       </h2>
 
@@ -391,13 +391,18 @@ export default function Home() {
         Tu código oficial es:
       </p>
 
-      <div className="bg-yellow-400 text-blue-900 text-5xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
+      <div className="bg-yellow-400 text-blue-900 text-4xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
         {codigoGenerado}
       </div>
       <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
 
         <p className="text-red-700 text-xl md:text-2xl font-black">
          ⚠️ Guarda este código
+
+Para consultar ganadores, resultados y próximos sorteos:
+
+📲 DESCARGA LA APP AQUÍ
+<InstallAppButton />
         </p>
 
          <p className="text-gray-700 mt-2 text-sm md:text-lg">
@@ -499,8 +504,50 @@ export default function Home() {
               </div>
 
               {/* CONTENIDO */}
+<div className="p-4 md:p-8">
 
-              <div className="p-4 md:p-8">
+  <div className="bg-blue-900 text-white rounded-3xl p-4 md:p-6 mb-8">
+
+    <p className="text-center font-black text-lg md:text-3xl mb-4">
+      ⏳ Tiempo restante para participar
+    </p>
+
+    <div className="grid grid-cols-4 gap-3 text-center">
+
+      <div>
+        <p className="text-2xl md:text-5xl font-black">
+          {dias}
+        </p>
+        <p>Días</p>
+      </div>
+
+      <div>
+        <p className="text-2xl md:text-5xl font-black">
+          {horas}
+        </p>
+        <p>Horas</p>
+      </div>
+
+      <div>
+        <p className="text-2xl md:text-5xl font-black">
+          {minutos}
+        </p>
+        <p>Min</p>
+      </div>
+
+      <div>
+        <p className="text-2xl md:text-5xl font-black">
+          {segundos}
+        </p>
+        <p>Seg</p>
+      </div>
+
+    </div>
+
+  </div>
+            <div className="bg-red-600 text-white p-4 rounded-2xl mb-4 text-center font-black">
+  FECHA CIERRE: {fechaCierre}
+</div>
 
                 <p className="text-center text-blue-900 text-lg md:text-2xl font-bold mb-8">
                   Registra tu número de cédula de ciudadanía, nombre y apellidos, celular y lugar de domicilio.
@@ -632,7 +679,7 @@ export default function Home() {
                           setMarcadorA(e.target.value)
                         }}
                         placeholder=""
-                        className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                        className="w-full h-24 text-center text-black-5xl font-black border-2 border-gray-300 rounded-2xl"
                       />
 
                     </div>
@@ -664,7 +711,7 @@ export default function Home() {
                           setMarcadorB(e.target.value)
                         }}
                         placeholder=""
-                        className="w-full h-24 text-center text-5xl font-black border-2 border-gray-300 rounded-2xl"
+                        className="w-full h-24 text-center text-black-5xl font-black border-2 border-gray-300 rounded-2xl"
                       />
 
                     </div>
