@@ -326,7 +326,10 @@ const codigoReferidoNuevo = crypto
   }
 const compartirWhatsapp = () => {
 
-  if (!codigoReferido) {
+   const codigo =
+    datosReferido?.codigo_referido || codigoReferido
+
+  if (!codigo) {
 
     alert('No se encontró el código de referido')
     return
@@ -334,7 +337,7 @@ const compartirWhatsapp = () => {
   }
 
   const link =
-    `${window.location.origin}/?ref=${codigoReferido}`
+    `${window.location.origin}/?ref=${codigo}`
 
   const mensaje =
 `🏆 GOL Y GANA CON NUESTRA SELECCIÓN
@@ -351,7 +354,8 @@ ${link}
     `https://wa.me/?text=${encodeURIComponent(mensaje)}`,
     '_blank'
   )
-  }
+
+}
 const consultarReferidos = async () => {
 
   if (!cedulaReferido) {
@@ -488,21 +492,21 @@ Codigo: ${data.codigo_referido}`
       e.target.value.replace(/\D/g, '')
     )
   }
-        className="w-full border-2 border-gray-300 rounded-2xl p-4 text-xl"
+        className="w-full border-2 border-gray-300 rounded-2xl p-3 text-lg"
       />
 
       <button
         onClick={consultarReferidos}
-        className="w-full mt-4 bg-blue-900 text-white font-black py-4 rounded-2xl"
+        className="w-full mt-4 bg-blue-900 text-white font-black py-3 rounded-2xl"
       >
      🔍 CONSULTAR
 </button>
 
 {datosReferido && (
 
-  <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-2xl p-4">
+  <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-2xl p-3">
 
-    <p className="text-blue-900 text-xl font-black">
+    <p className="text-blue-900 text-lg font-black">
       {datosReferido.nombre}
     </p>
 
@@ -608,7 +612,7 @@ Codigo: ${data.codigo_referido}`
 
 <button
   onClick={compartirWhatsapp}
-  className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl text-xl shadow-xl"
+  className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-3 rounded-2xl text-lg shadow-xl"
 >
   🟢 COMPARTIR POR WHATSAPP
 </button>
@@ -619,7 +623,7 @@ Codigo: ${data.codigo_referido}`
   <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
 
 
-<p className="text-red-700 text-xl md:text-2xl font-black">
+<p className="text-red-700 text-lg md:text-2xl font-black">
   ⚠️ Guarda tu código de participación
 </p>
 
@@ -684,7 +688,7 @@ onClick={() => {
   setAceptaReglamento(false)
 
 }}
-className="mt-6 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+className="mt-6 w-full bg-blue-900 text-white py-3 rounded-2xl font-black text-lg"
 >
 
 FINALIZAR
