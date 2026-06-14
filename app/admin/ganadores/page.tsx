@@ -85,7 +85,12 @@ export default function GanadoresPage() {
             <div className="flex justify-end mb-4">
 
               <LogoutButton />
-
+<a
+  href="/admin"
+  className="inline-block bg-blue-900 text-white px-6 py-3 rounded-2xl font-black text-lg hover:bg-blue-800 transition-all"
+>
+  ⬅️ VOLVER AL PANEL ADMIN
+</a>
             </div>
 
             <div className="text-center">
