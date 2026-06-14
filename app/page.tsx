@@ -462,43 +462,51 @@ const consultarReferidos = async () => {
 
 {mostrarReferidos && (
 
-<div className="bg-white rounded-3xl p-6 md:p-10 max-w-xl w-full">
+  <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-4">
 
-  <h2 className="text-3xl md:text-5xl font-black text-center text-green-700 mb-4">
-    🎁 ¡COMPARTE Y GANA!
-  </h2>
+    <div className="bg-white rounded-3xl p-6 md:p-10 w-full max-w-md shadow-2xl">
 
-  <p className="text-center text-gray-700 mb-6">
-    Consulta tu código de referido y comparte con tus amigos.
-  </p>
+      <h2 className="text-3xl md:text-5xl font-black text-center text-green-700 mb-4">
+        🎁 ¡COMPARTE Y GANA!
+      </h2>
 
-  <input
-    type="tel"
-    placeholder="Ingresa tu cédula"
-    value={cedulaReferido}
-    onChange={(e) =>
-      setCedulaReferido(e.target.value)
-    }
-    className="w-full border-2 border-gray-300 rounded-2xl p-4 text-xl"
-  />
+      <p className="text-center text-gray-700 mb-6">
+        ingresa tu cedula, podras compartir y ganar muchos premios.
+      </p>
 
-  <button
-    onClick={consultarReferidos}
-    className="w-full mt-4 bg-blue-900 text-white font-black py-4 rounded-2xl"
-  >
-    🔍 CONSULTAR
-  </button>
+      <input
+        type="tel"
+        placeholder="Ingresa tu cédula"
+        value={cedulaReferido}
+        onChange={(e) =>
+          setCedulaReferido(e.target.value)
+        }
+        className="w-full border-2 border-gray-300 rounded-2xl p-4 text-xl"
+      />
 
-  <button
-    onClick={() =>
-      setMostrarReferidos(false)
-    }
-    className="w-full mt-4 bg-red-600 text-white font-black py-4 rounded-2xl"
-  >
-    CERRAR
-  </button>
+      <button
+        onClick={consultarReferidos}
+        className="w-full mt-4 bg-blue-900 text-white font-black py-4 rounded-2xl"
+      >
+        🔍 CONSULTAR
+      </button>
 
-</div>
+      <button
+        onClick={() => {
+
+          document.body.style.overflow = 'auto'
+
+          setMostrarReferidos(false)
+
+        }}
+        className="w-full mt-4 bg-red-600 text-white font-black py-4 rounded-2xl"
+      >
+        CERRAR
+      </button>
+
+    </div>
+
+  </div>
 
 )}
       {/* MODAL EXITO */}
@@ -969,7 +977,13 @@ FINALIZAR
                   🏆 PARTICIPAR
                 </button>
 <button
-  onClick={() => setMostrarReferidos(true)}
+onClick={() => {
+
+  document.body.style.overflow = 'hidden'
+
+  setMostrarReferidos(true)
+
+}}
   className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-500 hover:scale-105 transition-all text-white text-2xl md:text-4xl font-black py-5 rounded-3xl shadow-2xl"
 >
   🎁 ¡COMPARTE Y GANA!
