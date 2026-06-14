@@ -70,37 +70,27 @@ const [totalReferidos, setTotalReferidos] = useState(0)
 
   // CARGAR PARTIDO
 
-  const cargarPartido = async () => {
-    const cargarCampania = async () => {
+const cargarPartido = async () => {
 
   const { data } = await supabase
-    .from('campanias_referidos')
+    .from('partidos')
     .select('*')
-    .eq('activa', true)
+    .eq('activo', true)
     .single()
 
   if (data) {
 
-    setCampaniaActiva(data)
+    setEquipoA(data.equipo_a)
+    setEquipoB(data.equipo_b)
+    setPartidoId(data.id)
+    setFechaCierre(data.fecha)
 
   }
 
 }
 
-    const { data } = await supabase
-      .from('partidos')
-      .select('*')
-      .eq('activo', true)
-      .single()
+// CARGAR CAMPAÑA
 
-    if (data) {
-
-      setEquipoA(data.equipo_a)
-      setEquipoB(data.equipo_b)
-      setPartidoId(data.id)
-      setFechaCierre(data.fecha)
-    }
-  }
 const cargarCampania = async () => {
 
   const { data, error } = await supabase
@@ -119,10 +109,12 @@ const cargarCampania = async () => {
   setCampaniaActiva(data)
 
 }
-  useEffect(() => {
+
+useEffect(() => {
 
   cargarPartido()
   cargarCampania()
+
   const params =
     new URLSearchParams(window.location.search)
 
@@ -423,7 +415,9 @@ Codigo: ${data.codigo_referido}`
 
 
   setDatosReferido(data)
-
+await cargarRanking(
+  data.codigo_referido
+)
   const { count } = await supabase
     .from('participantes')
     .select('*', {
@@ -436,8 +430,85 @@ Codigo: ${data.codigo_referido}`
     )
 
   setTotalReferidos(count || 0)
- 
+  const progreso =
+
+  campaniaActiva
+
+    ? Math.min(
+
+        100,
+
+        Math.round(
+
+          ((count || 0) /
+
+            campaniaActiva.meta_referidos) *
+
+            100
+
+        )
+
+      )
+
+    : 0
+ setProgresoReferidos(progreso)
 }
+const cargarRanking = async (
+  codigoUsuario?: string
+) => {
+
+  const { data } = await supabase
+    .from('participantes')
+    .select('nombre,codigo_referido')
+
+  if (!data) return
+
+  const rankingTemp = []
+
+  for (const participante of data) {
+
+    const { count } = await supabase
+      .from('participantes')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
+      .eq(
+        'referido_por',
+        participante.codigo_referido
+      )
+
+    rankingTemp.push({
+      nombre: participante.nombre,
+      codigo:
+        participante.codigo_referido,
+      total: count || 0,
+    })
+
+  }
+
+  rankingTemp.sort(
+    (a, b) => b.total - a.total
+  )
+
+  setRanking(
+    rankingTemp.slice(0, 10)
+  )
+
+  if (codigoUsuario) {
+
+    const posicion =
+      rankingTemp.findIndex(
+        item =>
+          item.codigo === codigoUsuario
+      ) + 1
+
+    setPosicionRanking(posicion)
+
+  }
+
+}
+
   return (
 
     <main
@@ -582,19 +653,27 @@ Codigo: ${data.codigo_referido}`
   </div>
 
 )}
- const progreso =
-  campaniaActiva
-    ? Math.min(
-        100,
-        Math.round(
-          ((count || 0) /
-            campaniaActiva.meta_referidos) *
-            100
-        )
-      )
-    : 0
+ {posicionRanking && (
 
-setProgresoReferidos(progreso)
+  <div className="mt-4 bg-yellow-100 border border-yellow-300 rounded-xl p-3">
+
+    <p className="font-black text-yellow-800 text-center">
+
+      🏆 Tu posición en el ranking:
+      #{posicionRanking}
+
+    </p>
+
+  </div>
+
+)}
+<p className="mt-4 text-gray-700 font-bold">
+  👥 Referidos registrados
+</p>
+
+<div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2 text-center">
+  {totalReferidos}
+</div>
 {campaniaActiva && (
 
   <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-3">
@@ -624,36 +703,7 @@ setProgresoReferidos(progreso)
       onClick={compartirWhatsapp}
       className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl"
     >
-      {campaniaActiva && (
-
-  <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4">
-
-    <p className="font-black text-yellow-700">
-      🎁 CAMPAÑA ACTIVA
-    </p>
-
-    <p className="mt-2 font-bold">
-      {campaniaActiva.nombre}
-    </p>
-
-    <p>
-      Patrocinador:
-      {campaniaActiva.patrocinador}
-    </p>
-
-    <p>
-      Premio:
-      {campaniaActiva.premio}
-    </p>
-
-    <p>
-      Meta:
-      {campaniaActiva.meta_referidos} referidos
-    </p>
-
-  </div>
-
-)}
+     
       🟢 COMPARTIR POR WHATSAPP
     </button>
 
