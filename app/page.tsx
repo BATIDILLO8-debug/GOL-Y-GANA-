@@ -40,17 +40,13 @@ export default function Home() {
   const [codigoGenerado, setCodigoGenerado] = useState('')
   const [referidoPor, setReferidoPor] = useState('')
   const [codigoReferido, setCodigoReferido] = useState('')
-  const [mostrarReferidos, setMostrarReferidos] =
-  useState(false)
+  const [mostrarReferidos, setMostrarReferidos] = useState(false)
 
-const [cedulaReferido, setCedulaReferido] =
-  useState('')
+const [cedulaReferido, setCedulaReferido] = useState('')
 
-const [datosReferido, setDatosReferido] =
-  useState<any>(null)
+const [datosReferido, setDatosReferido] = useState<any>(null)
 
-const [totalReferidos, setTotalReferidos] =
-  useState(0)
+const [totalReferidos, setTotalReferidos] = useState(0)
 
   // GPS
 
@@ -462,7 +458,49 @@ const consultarReferidos = async () => {
 
         )
       }
+{/* MODAL COMPARTE Y GANA */}
 
+{mostrarReferidos && (
+
+<div className="bg-white rounded-3xl p-6 md:p-10 max-w-xl w-full">
+
+  <h2 className="text-3xl md:text-5xl font-black text-center text-green-700 mb-4">
+    🎁 ¡COMPARTE Y GANA!
+  </h2>
+
+  <p className="text-center text-gray-700 mb-6">
+    Consulta tu código de referido y comparte con tus amigos.
+  </p>
+
+  <input
+    type="tel"
+    placeholder="Ingresa tu cédula"
+    value={cedulaReferido}
+    onChange={(e) =>
+      setCedulaReferido(e.target.value)
+    }
+    className="w-full border-2 border-gray-300 rounded-2xl p-4 text-xl"
+  />
+
+  <button
+    onClick={consultarReferidos}
+    className="w-full mt-4 bg-blue-900 text-white font-black py-4 rounded-2xl"
+  >
+    🔍 CONSULTAR
+  </button>
+
+  <button
+    onClick={() =>
+      setMostrarReferidos(false)
+    }
+    className="w-full mt-4 bg-red-600 text-white font-black py-4 rounded-2xl"
+  >
+    CERRAR
+  </button>
+
+</div>
+
+)}
       {/* MODAL EXITO */}
 
 {mostrarExito && (
