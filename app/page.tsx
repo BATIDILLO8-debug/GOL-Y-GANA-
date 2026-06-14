@@ -38,6 +38,19 @@ export default function Home() {
 
   const [mostrarExito, setMostrarExito] = useState(false)
   const [codigoGenerado, setCodigoGenerado] = useState('')
+  const [referidoPor, setReferidoPor] = useState('')
+  const [codigoReferido, setCodigoReferido] = useState('')
+  const [mostrarReferidos, setMostrarReferidos] =
+  useState(false)
+
+const [cedulaReferido, setCedulaReferido] =
+  useState('')
+
+const [datosReferido, setDatosReferido] =
+  useState<any>(null)
+
+const [totalReferidos, setTotalReferidos] =
+  useState(0)
 
   // GPS
 
@@ -72,8 +85,21 @@ export default function Home() {
   }
 
   useEffect(() => {
-    cargarPartido()
-  }, [])
+
+  cargarPartido()
+
+  const params =
+    new URLSearchParams(window.location.search)
+
+  const ref = params.get('ref')
+
+  if (ref) {
+
+    setReferidoPor(ref)
+
+  }
+
+}, [])
 
   // CONTADOR
 
@@ -224,6 +250,11 @@ export default function Home() {
     let participanteId = null
 
     if (!participanteExistente) {
+const codigoReferidoNuevo = crypto
+  .randomUUID()
+  .replace(/-/g, '')
+  .substring(0, 8)
+  .toUpperCase()
 
       const { data, error } = await supabase
         .from('participantes')
@@ -232,6 +263,11 @@ export default function Home() {
             cedula,
             nombre,
             celular,
+              codigo_referido:
+    codigoReferidoNuevo,
+
+  referido_por:
+    referidoPor || null,
             lugar_residencia:
               lugarResidencia === 'OTROS'
                 ? otroLugar
@@ -252,10 +288,15 @@ export default function Home() {
       }
 
       participanteId = data.id
+      setCodigoReferido(
+  codigoReferidoNuevo
+)
 
     } else {
 
-      participanteId = participanteExistente.id
+       participanteId =participanteExistente.id
+
+  setCodigoReferido(    participanteExistente.codigo_referido)
     }
 
     const { error } = await supabase
@@ -287,7 +328,71 @@ export default function Home() {
     setMarcadorA('')
     setMarcadorB('')
   }
+const compartirWhatsapp = () => {
 
+  if (!codigoReferido) {
+
+    alert('No se encontró el código de referido')
+    return
+
+  }
+
+  const link =
+    `${window.location.origin}/?ref=${codigoReferido}`
+
+  const mensaje =
+`🏆 GOL Y GANA CON NUESTRA SELECCIÓN
+
+⚽ Participa y gana premios pronosticando el marcador.
+
+🎁 Regístrate gratis aquí:
+
+${link}
+
+📲 Invitación enviada por un participante oficial.`
+
+  window.open(
+    `https://wa.me/?text=${encodeURIComponent(mensaje)}`,
+    '_blank'
+  )
+  }
+const consultarReferidos = async () => {
+
+  if (!cedulaReferido) {
+
+    alert('Ingrese una cédula')
+    return
+
+  }
+
+  const { data } = await supabase
+    .from('participantes')
+    .select('*')
+    .eq('cedula', cedulaReferido)
+    .single()
+
+  if (!data) {
+
+    alert('Participante no encontrado')
+    return
+
+  }
+
+  setDatosReferido(data)
+
+  const { count } = await supabase
+    .from('participantes')
+    .select('*', {
+      count: 'exact',
+      head: true,
+    })
+    .eq(
+      'referido_por',
+      data.codigo_referido
+    )
+
+  setTotalReferidos(count || 0)
+}
   return (
 
     <main
@@ -361,117 +466,153 @@ export default function Home() {
       {/* MODAL EXITO */}
 
 {mostrarExito && (
-  <div className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4">
+
+<div className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4 flex justify-center items-start">
 
     <div className="bg-white rounded-[35px] p-5 md:p-10 max-w-xl w-full text-center shadow-2xl max-h-[90vh] overflow-y-auto">
+    <Image
+      src="/logo.png"
+      alt="Logo"
+      width={180}
+      height={180}
+      className="w-32 md:w-44 h-auto"
+    />
+  </div>
 
-      <div className="flex justify-center mb-5">
-        <Image
-          src="/logo.png"
-          alt="Logo"
-          width={180}
-          height={180}
-          className="w-32 md:w-44 h-auto"
-        />
-      </div>
+  <h2 className="text-2xl md:text-5xl font-black text-blue-900 uppercase">
+    ✅ Registro Exitoso
+  </h2>
 
-      <h2 className="text-2xl md:text-5xl font-black text-blue-900 uppercase">
-        ✅ Registro Exitoso
-      </h2>
-
-      <p className="mt-5 text-lg md:text-2xl text-gray-700">
-        Participante:
-      </p>
-
-      <p className="text-2xl md:text-4xl font-black text-red-600 uppercase mt-2">
-        {nombre}
-      </p>
-
-      <p className="mt-6 text-lg md:text-2xl text-gray-700">
-        Tu código oficial es:
-      </p>
-
-      <div className="bg-yellow-400 text-blue-900 text-4xl md:text-7xl font-black rounded-3xl py-6 mt-4 shadow-xl">
-        {codigoGenerado}
-      </div>
-      <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
-
-        <p className="text-red-700 text-xl md:text-2xl font-black">
-         ⚠️ Guarda este código
-
-Para consultar ganadores, resultados y próximos sorteos:
-
-📲 DESCARGA LA APP AQUÍ
-<InstallAppButton />
-        </p>
-
-         <p className="text-gray-700 mt-2 text-sm md:text-lg">
-           Será solicitado para reclamar premios y verificar tu participación.
-         </p>
-
-       </div>
-
-      <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
-
-        <p className="font-black uppercase">
-          Amor por lo Nuestro
-        </p>
-
-        <p>
-          Una iniciativa de Erik Dimingo
-        </p>
-
-        <p>
-          Porque la selección nos une 🇨🇴
-        </p>
-
-      </div>
-
-      <div className="mt-8">
-
-  <p className="text-blue-900 font-black text-xl md:text-3xl mb-4">
-    📲 Instala la App
+  <p className="mt-5 text-lg md:text-2xl text-gray-700">
+    Participante:
   </p>
 
-  <div className="text-gray-700 text-sm md:text-lg space-y-1 mb-6">
+  <p className="text-2xl md:text-4xl font-black text-red-600 uppercase mt-2">
+    {nombre}
+  </p>
 
-    <p>• Consulta ganadores</p>
-    <p>• Consulta resultados</p>
-    <p>• Consulta nuevos partidos</p>
-    <p>• Participa en próximos sorteos</p>
+  <p className="mt-6 text-lg md:text-2xl text-gray-700">
+    Tu código de participación es:
+  </p>
+
+  <div className="bg-yellow-400 text-blue-900 text-3xl md:text-6xl font-black rounded-3xl py-6 mt-4 shadow-xl">
+    {codigoGenerado}
+  </div>
+
+  <div className="mt-6">
+
+<p className="text-lg md:text-2xl text-gray-700 font-bold">
+  👥 Tu código de referido
+</p>
+
+<div className="bg-green-600 text-white text-3xl md:text-5xl font-black rounded-3xl py-4 mt-2 shadow-xl">
+  {codigoReferido}
+</div>
+
 
   </div>
 
-  <InstallAppButton />
+  <div className="mt-6 bg-green-50 border-2 border-green-300 rounded-2xl p-5">
+
+
+<h3 className="text-green-700 text-2xl font-black">
+  🎁 ¡COMPARTE Y GANA!
+</h3>
+
+<p className="text-gray-700 mt-3 text-base md:text-lg">
+  Comparte tu enlace con amigos y familiares.
+  Próximamente podrás ganar premios especiales,
+  recargas y bonos patrocinados por nuestros aliados.
+</p>
+
+<button
+  onClick={compartirWhatsapp}
+  className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl text-xl shadow-xl"
+>
+  🟢 COMPARTIR POR WHATSAPP
+</button>
+
+
+  </div>
+
+  <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
+
+
+<p className="text-red-700 text-xl md:text-2xl font-black">
+  ⚠️ Guarda tu código de participación
+</p>
+
+<p className="text-gray-700 mt-3 text-sm md:text-lg">
+  Será solicitado para consultar resultados,
+  verificar ganadores y reclamar premios.
+</p>
+
+
+  </div>
+
+  <div className="mt-6">
+
+
+<div className="text-gray-700 text-sm md:text-lg space-y-1 mb-6">
+
+  <p>• Consulta ganadores</p>
+  <p>• Consulta resultados</p>
+  <p>• Consulta nuevos partidos</p>
+  <p>• Participa en próximos sorteos</p>
 
 </div>
 
-      <button
-  onClick={() => {
+<InstallAppButton />
 
-    setMostrarExito(false)
-
-    setCedula('')
-    setNombre('')
-    setCelular('')
-    setLugarResidencia('')
-    setOtroLugar('')
-
-    setMarcadorA('')
-    setMarcadorB('')
-
-    setAceptaDatos(false)
-    setAceptaReglamento(false)
-
-  }}
-        className="mt-4 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
-      >
-        FINALIZAR
-      </button>
-
-    </div>
 
   </div>
+
+  <div className="mt-8 text-gray-500 text-sm md:text-lg leading-relaxed">
+
+<p className="font-black uppercase">
+  Amor por lo Nuestro
+</p>
+
+<p>
+  Una iniciativa de Erik Dimingo
+</p>
+
+<p>
+  Porque la selección nos une 🇨🇴
+</p>
+
+
+  </div>
+
+<button
+onClick={() => {
+
+
+  setMostrarExito(false)
+
+  setCedula('')
+  setNombre('')
+  setCelular('')
+  setLugarResidencia('')
+  setOtroLugar('')
+
+  setMarcadorA('')
+  setMarcadorB('')
+
+  setAceptaDatos(false)
+  setAceptaReglamento(false)
+
+}}
+className="mt-6 w-full bg-blue-900 text-white py-4 rounded-2xl font-black text-xl"
+>
+
+FINALIZAR
+
+
+  </button>
+
+</div>
+   
 )}
             {/* CONTENEDOR */}
 
@@ -789,7 +930,12 @@ Para consultar ganadores, resultados y próximos sorteos:
                 >
                   🏆 PARTICIPAR
                 </button>
-
+<button
+  onClick={() => setMostrarReferidos(true)}
+  className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-500 hover:scale-105 transition-all text-white text-2xl md:text-4xl font-black py-5 rounded-3xl shadow-2xl"
+>
+  🎁 ¡COMPARTE Y GANA!
+</button>
               </div>
 
             </div>
