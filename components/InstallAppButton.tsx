@@ -79,6 +79,11 @@ return (
     Instala la aplicación para consultar ganadores,
     resultados y próximos sorteos.
   </p>
+  <p className="text-red-500 font-bold">
+  {deferredPrompt
+    ? 'PROMPT DISPONIBLE'
+    : 'PROMPT NO DISPONIBLE'}
+</p>
 
 </div>
 

@@ -1,44 +1,62 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: "Gol y Gana",
-  description: "Participa y gana con nuestra selección",
+  title: 'Gol y Gana con Nuestra Selección',
 
-  manifest: "/manifest.json",
+  description:
+    'Participa y gana con nuestra selección. Registra tu marcador y participa por premios oficiales.',
 
-  icons: {
-    icon: "/icon-192.png",
-    apple: "/icon-192.png",
+  applicationName: 'Gol y Gana',
+
+  manifest: '/manifest.json',
+
+  openGraph: {
+    title: 'Gol y Gana con Nuestra Selección',
+    description:
+      'Participa y gana con nuestra selección. Registra tu marcador y participa por premios oficiales.',
+    url: 'https://gol-y-gana.vercel.app',
+    siteName: 'Gol y Gana',
+    locale: 'es_CO',
+    type: 'website',
+
+    images: [
+      {
+        url: '/social-share.png',
+        width: 1200,
+        height: 630,
+        alt: 'Gol y Gana con Nuestra Selección',
+      },
+    ],
   },
 
-  themeColor: "#002B7F",
-};
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Gol y Gana con Nuestra Selección',
+    description:
+      'Participa y gana con nuestra selección. Registra tu marcador y participa por premios oficiales.',
+    images: ['/social-share.png'],
+  },
+
+  icons: {
+    icon: '/icon-192.png',
+    apple: '/icon-192.png',
+    shortcut: '/icon-192.png',
+  },
+}
+
+export const viewport = {
+  themeColor: '#002B7F',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        {children}
-      </body>
+    <html lang="es">
+      <body>{children}</body>
     </html>
-  );
+  )
 }
