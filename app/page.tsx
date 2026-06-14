@@ -558,7 +558,9 @@ Para consultar ganadores, resultados y próximos sorteos:
                 <div className="space-y-4">
 
                   <input
-                    type="text"
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder="Número de cédula"
                     value={cedula}
                     onChange={(e) => {
@@ -584,7 +586,9 @@ Para consultar ganadores, resultados y próximos sorteos:
                   />
 
                   <input
-                    type="text"
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     placeholder="Celular"
                     value={celular}
                     maxLength={10}
@@ -679,7 +683,7 @@ Para consultar ganadores, resultados y próximos sorteos:
                           setMarcadorA(e.target.value)
                         }}
                         placeholder=""
-                        className="w-full h-24 text-center text-black-5xl font-black border-2 border-gray-300 rounded-2xl"
+                        className="w-full h-28 md:h-32 text-center text-6xl md:text-7xl font-black text-black border-2 border-gray-400 rounded-2xl bg-white"
                       />
 
                     </div>
@@ -711,7 +715,7 @@ Para consultar ganadores, resultados y próximos sorteos:
                           setMarcadorB(e.target.value)
                         }}
                         placeholder=""
-                        className="w-full h-24 text-center text-black-5xl font-black border-2 border-gray-300 rounded-2xl"
+                        className="w-full h-28 md:h-32 text-center text-6xl md:text-7xl font-black text-black border-2 border-gray-400 rounded-2xl bg-white"
                       />
 
                     </div>
