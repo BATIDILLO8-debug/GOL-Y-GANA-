@@ -369,10 +369,15 @@ const consultarReferidos = async () => {
 
   if (!data) {
 
-    alert('Participante no encontrado')
+    alert('Participante no encontrado, primero debes participar dejando tu marcador, para poder compartir')
     return
 
   }
+alert(
+  `Nombre: ${data.nombre}
+Codigo: ${data.codigo_referido}`
+)
+
 
   setDatosReferido(data)
 
@@ -479,8 +484,10 @@ const consultarReferidos = async () => {
         placeholder="Ingresa tu cédula"
         value={cedulaReferido}
         onChange={(e) =>
-          setCedulaReferido(e.target.value)
-        }
+           setCedulaReferido(
+      e.target.value.replace(/\D/g, '')
+    )
+  }
         className="w-full border-2 border-gray-300 rounded-2xl p-4 text-xl"
       />
 
@@ -488,21 +495,48 @@ const consultarReferidos = async () => {
         onClick={consultarReferidos}
         className="w-full mt-4 bg-blue-900 text-white font-black py-4 rounded-2xl"
       >
-        🔍 CONSULTAR
-      </button>
+     🔍 CONSULTAR
+</button>
 
-      <button
-        onClick={() => {
+{datosReferido && (
 
-          document.body.style.overflow = 'auto'
+  <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-2xl p-4">
 
-          setMostrarReferidos(false)
+    <p className="text-blue-900 text-xl font-black">
+      {datosReferido.nombre}
+    </p>
 
-        }}
-        className="w-full mt-4 bg-red-600 text-white font-black py-4 rounded-2xl"
-      >
-        CERRAR
-      </button>
+    <p className="mt-4 text-gray-700 font-bold">
+      👥 Referidos registrados
+    </p>
+
+    <div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2">
+      {totalReferidos}
+    </div>
+
+    <button
+      onClick={compartirWhatsapp}
+      className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl"
+    >
+      🟢 COMPARTIR POR WHATSAPP
+    </button>
+
+  </div>
+
+)}
+
+<button
+  onClick={() => {
+
+    document.body.style.overflow = 'auto'
+
+    setMostrarReferidos(false)
+
+  }}
+  className="w-full mt-4 bg-red-600 text-white font-black py-4 rounded-2xl"
+>
+  CERRAR
+</button>
 
     </div>
 
