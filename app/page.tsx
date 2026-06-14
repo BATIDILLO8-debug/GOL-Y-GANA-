@@ -41,6 +41,13 @@ export default function Home() {
   const [referidoPor, setReferidoPor] = useState('')
   const [codigoReferido, setCodigoReferido] = useState('')
   const [mostrarReferidos, setMostrarReferidos] = useState(false)
+  const [campaniaActiva, setCampaniaActiva] = useState<any>(null)
+  const [progresoReferidos, setProgresoReferidos] =
+  useState(0)
+  const [ranking, setRanking] = useState<any[]>([])
+const [posicionRanking, setPosicionRanking] =
+  useState<number | null>(null)
+  
 
 const [cedulaReferido, setCedulaReferido] = useState('')
 
@@ -64,6 +71,21 @@ const [totalReferidos, setTotalReferidos] = useState(0)
   // CARGAR PARTIDO
 
   const cargarPartido = async () => {
+    const cargarCampania = async () => {
+
+  const { data } = await supabase
+    .from('campanias_referidos')
+    .select('*')
+    .eq('activa', true)
+    .single()
+
+  if (data) {
+
+    setCampaniaActiva(data)
+
+  }
+
+}
 
     const { data } = await supabase
       .from('partidos')
@@ -79,11 +101,28 @@ const [totalReferidos, setTotalReferidos] = useState(0)
       setFechaCierre(data.fecha)
     }
   }
+const cargarCampania = async () => {
 
+  const { data, error } = await supabase
+    .from('campanias_referidos')
+    .select('*')
+    .eq('activa', true)
+    .single()
+
+  if (error) {
+
+    console.log(error)
+    return
+
+  }
+
+  setCampaniaActiva(data)
+
+}
   useEffect(() => {
 
   cargarPartido()
-
+  cargarCampania()
   const params =
     new URLSearchParams(window.location.search)
 
@@ -397,6 +436,7 @@ Codigo: ${data.codigo_referido}`
     )
 
   setTotalReferidos(count || 0)
+ 
 }
   return (
 
@@ -513,7 +553,69 @@ Codigo: ${data.codigo_referido}`
     <p className="mt-4 text-gray-700 font-bold">
       👥 Referidos registrados
     </p>
+    
+{campaniaActiva && (
 
+  <div className="mt-4">
+
+    <p className="text-sm font-bold text-gray-700">
+      🎯 Meta:
+      {campaniaActiva.meta_referidos}
+      {' '}referidos
+    </p>
+
+    <div className="w-full bg-gray-200 rounded-full h-5 mt-2 overflow-hidden">
+
+      <div
+        className="bg-green-600 h-5 transition-all duration-500"
+        style={{
+          width: `${progresoReferidos}%`
+        }}
+      />
+
+    </div>
+
+    <p className="font-black text-green-700 mt-2">
+      {progresoReferidos}% completado
+    </p>
+
+  </div>
+
+)}
+ const progreso =
+  campaniaActiva
+    ? Math.min(
+        100,
+        Math.round(
+          ((count || 0) /
+            campaniaActiva.meta_referidos) *
+            100
+        )
+      )
+    : 0
+
+setProgresoReferidos(progreso)
+{campaniaActiva && (
+
+  <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-3">
+
+    <p className="font-black text-yellow-700">
+      🎁 Premio actual
+    </p>
+
+    <p className="font-bold">
+      {campaniaActiva.premio}
+    </p>
+
+    <p className="text-sm text-gray-600 mt-1">
+      Patrocinado por:
+      {' '}
+      {campaniaActiva.patrocinador}
+    </p>
+
+  </div>
+
+)}
     <div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2">
       {totalReferidos}
     </div>
@@ -522,6 +624,36 @@ Codigo: ${data.codigo_referido}`
       onClick={compartirWhatsapp}
       className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl"
     >
+      {campaniaActiva && (
+
+  <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4">
+
+    <p className="font-black text-yellow-700">
+      🎁 CAMPAÑA ACTIVA
+    </p>
+
+    <p className="mt-2 font-bold">
+      {campaniaActiva.nombre}
+    </p>
+
+    <p>
+      Patrocinador:
+      {campaniaActiva.patrocinador}
+    </p>
+
+    <p>
+      Premio:
+      {campaniaActiva.premio}
+    </p>
+
+    <p>
+      Meta:
+      {campaniaActiva.meta_referidos} referidos
+    </p>
+
+  </div>
+
+)}
       🟢 COMPARTIR POR WHATSAPP
     </button>
 
@@ -621,7 +753,7 @@ Codigo: ${data.codigo_referido}`
 </button>
 
 </div>
-  </div>
+
 
   <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
 
@@ -698,7 +830,7 @@ FINALIZAR
 
 
   </button>
-
+  </div>
 </div>
    
 )}
