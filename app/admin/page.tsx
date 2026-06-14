@@ -8,128 +8,164 @@ import LogoutButton from '@/components/LogoutButton'
 
 export default function AdminPage() {
 
-  const [equipoA, setEquipoA] = useState('')
-  const [equipoB, setEquipoB] = useState('')
-  const [fecha, setFecha] = useState('')
+const [equipoA, setEquipoA] = useState('')
+const [equipoB, setEquipoB] = useState('')
+const [fecha, setFecha] = useState('')
 
-  const crearPartido = async () => {
+const crearPartido = async () => {
 
-    if (!equipoA || !equipoB || !fecha) {
 
-      alert('Completa todos los campos')
-      return
-    }
+if (!equipoA || !equipoB || !fecha) {
 
-    await supabase
-      .from('partidos')
-      .update({ activo: false })
-      .neq('id', 0)
+  alert('Completa todos los campos')
+  return
+}
 
-    const { error } = await supabase
-      .from('partidos')
-      .insert([
-        {
-          equipo_a: equipoA,
-          equipo_b: equipoB,
-          fecha: fecha,
-          activo: true,
-        },
-      ])
+await supabase
+  .from('partidos')
+  .update({ activo: false })
+  .neq('id', 0)
 
-    if (error) {
+const { error } = await supabase
+  .from('partidos')
+  .insert([
+    {
+      equipo_a: equipoA,
+      equipo_b: equipoB,
+      fecha,
+      activo: true,
+    },
+  ])
 
-      console.log(error)
-      alert('Error creando partido')
-      return
-    }
+if (error) {
 
-    alert('⚽ Partido creado correctamente')
+  console.log(error)
+  alert('Error creando partido')
+  return
+}
 
-    setEquipoA('')
-    setEquipoB('')
-    setFecha('')
-  }
+alert('⚽ Partido creado correctamente')
 
-  return (
+setEquipoA('')
+setEquipoB('')
+setFecha('')
 
-    <AuthGuard>
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
+}
 
-        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+return (
 
-          {/* HEADER */}
 
-          <div className="bg-yellow-400 p-6">
+<AuthGuard>
 
-            <div className="flex justify-end mb-4">
+  <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-10">
 
-              <LogoutButton />
+    <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
 
-            </div>
+      <div className="bg-yellow-400 p-6">
 
-            <div className="text-center">
+        <div className="flex justify-end mb-4">
+          <LogoutButton />
+        </div>
 
-              <h1 className="text-5xl font-black text-blue-900 uppercase">
-                Panel Admin
-              </h1>
+        <div className="text-center">
 
-              <p className="text-red-600 text-2xl font-bold mt-2">
-                Gol y Gana con Nuestra Selección
-              </p>
+          <h1 className="text-5xl font-black text-blue-900 uppercase">
+            Panel Admin
+          </h1>
 
-            </div>
-
-          </div>
-
-          {/* CONTENIDO */}
-
-          <div className="p-10">
-
-            <h2 className="text-3xl font-black text-blue-900 mb-8">
-              Crear Partido
-            </h2>
-
-            <div className="space-y-6">
-
-              <input
-                type="text"
-                placeholder="Equipo A"
-                value={equipoA}
-                onChange={(e) => setEquipoA(e.target.value)}
-                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-              />
-
-              <input
-                type="text"
-                placeholder="Equipo B"
-                value={equipoB}
-                onChange={(e) => setEquipoB(e.target.value)}
-                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-              />
-
-              <input
-                type="datetime-local"
-                value={fecha}
-                onChange={(e) => setFecha(e.target.value)}
-                className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
-              />
-
-              <button
-                onClick={crearPartido}
-                className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-3xl font-black p-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
-              >
-                ⚽ CREAR PARTIDO
-              </button>
-
-            </div>
-
-          </div>
+          <p className="text-red-600 text-2xl font-bold mt-2">
+            Gol y Gana con Nuestra Selección
+          </p>
 
         </div>
 
-      </main>
+      </div>
 
-    </AuthGuard>
-  )
+      <div className="p-10">
+
+        <h2 className="text-3xl font-black text-blue-900 mb-8">
+          Módulos Administrativos
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-5 mb-12">
+
+          <a
+            href="/admin/participantes"
+            className="bg-blue-900 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+          >
+            👥 PARTICIPANTES
+          </a>
+
+          <a
+            href="/admin/ganadores"
+            className="bg-green-700 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+          >
+            🎯 GANADORES
+          </a>
+
+          <a
+            href="/admin/sorteo"
+            className="bg-yellow-500 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+          >
+            🎁 SORTEO
+          </a>
+
+          <a
+            href="/admin/live"
+            className="bg-red-600 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+          >
+            📺 PARTIDO EN VIVO
+          </a>
+
+        </div>
+
+        <h2 className="text-3xl font-black text-blue-900 mb-8">
+          ⚽ Crear Partido
+        </h2>
+
+        <div className="space-y-6">
+
+          <input
+            type="text"
+            placeholder="Equipo A"
+            value={equipoA}
+            onChange={(e) => setEquipoA(e.target.value)}
+            className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+          />
+
+          <input
+            type="text"
+            placeholder="Equipo B"
+            value={equipoB}
+            onChange={(e) => setEquipoB(e.target.value)}
+            className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+          />
+
+          <input
+            type="datetime-local"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+            className="w-full border-2 border-blue-900 rounded-2xl p-5 text-2xl"
+          />
+
+          <button
+            onClick={crearPartido}
+            className="w-full bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 text-white text-3xl font-black p-6 rounded-3xl shadow-2xl hover:scale-105 transition-all"
+          >
+            ⚽ CREAR PARTIDO
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</AuthGuard>
+
+
+)
 }
