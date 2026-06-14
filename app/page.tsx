@@ -553,20 +553,23 @@ Codigo: ${data.codigo_referido}`
 
 <div className="fixed inset-0 z-50 bg-black/80 overflow-y-auto p-4 flex justify-center items-start">
 
-    <div className="bg-white rounded-[35px] p-5 md:p-10 max-w-xl w-full text-center shadow-2xl max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-center mb-5"></div>
-    <Image
-      src="/logo.png"
-      alt="Logo"
-      width={180}
-      height={180}
-      className="w-32 md:w-44 h-auto"
-    />
-  </div>
+  <div className="bg-white rounded-[35px] p-5 md:p-10 max-w-xl w-full text-center shadow-2xl max-h-[90vh] overflow-y-auto">
 
-  <h2 className="text-2xl md:text-5xl font-black text-blue-900 uppercase">
-    ✅ Registro Exitoso
-  </h2>
+    <div className="flex justify-center mb-5">
+
+      <Image
+        src="/logo.png"
+        alt="Logo"
+        width={180}
+        height={180}
+        className="w-32 md:w-44 h-auto"
+      />
+
+    </div>
+
+    <h2 className="text-2xl md:text-5xl font-black text-blue-900 uppercase">
+      ✅ Registro Exitoso
+    </h2>
 
   <p className="mt-5 text-lg md:text-2xl text-gray-700">
     Participante:
@@ -617,7 +620,7 @@ Codigo: ${data.codigo_referido}`
   🟢 COMPARTIR POR WHATSAPP
 </button>
 
-
+</div>
   </div>
 
   <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-2xl p-5">
@@ -1030,7 +1033,7 @@ onClick={() => {
               </div>
 
             </div>
-
+            
           </main>
-        )
+)
       }
