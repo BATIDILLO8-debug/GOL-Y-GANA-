@@ -696,7 +696,7 @@ const cargarRanking = async (
       e.target.value.replace(/\D/g, '')
     )
   }
-        className="w-full border-2 border-gray-300 rounded-2xl p-3 text-lg"
+        className="w-full border-2 border-gray-900 rounded-2xl p-3 text-lg"
       />
 
       <button
@@ -795,7 +795,7 @@ const cargarRanking = async (
 
       </p>
 
-      <p className="font-bold">
+      <p className="text-black font-black text-xl">
         {campaniaActiva.premio}
       </p>
 
@@ -809,7 +809,7 @@ const cargarRanking = async (
 
       </p>
 
-      <p className="font-bold">
+      <p className="text-black font-black text-xl">
         {campaniaActiva.patrocinador}
       </p>
 
@@ -823,7 +823,7 @@ const cargarRanking = async (
 
       </p>
 
-      <p className="font-bold">
+      <p className="text-black font-black text-xl">
 
         {new Date(
           campaniaActiva.fecha_fin
@@ -836,11 +836,7 @@ const cargarRanking = async (
   </div>
 
 )}
-    <div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2">
-      {totalReferidos}
-    </div>
-
-    <button
+       <button
       onClick={compartirWhatsapp}
       className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl"
     >
@@ -870,7 +866,7 @@ const cargarRanking = async (
 
         <div>
 
-          <span className="font-black">
+          <span className="text-black font-black text-xl">
 
             {index === 0 && '🥇 '}
             {index === 1 && '🥈 '}
