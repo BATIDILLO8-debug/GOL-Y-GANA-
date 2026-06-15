@@ -675,9 +675,9 @@ const cargarRanking = async (
 
 {mostrarReferidos && (
 
-  <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-[9999] bg-black/90 overflow-y-auto p-4">
 
-    <div className="bg-white rounded-3xl p-6 md:p-10 w-full max-w-md shadow-2xl">
+   <div className="bg-white rounded-3xl p-6 md:p-10 w-full max-w-md mx-auto my-6 shadow-2xl">
 
       <h2 className="text-3xl md:text-5xl font-black text-center text-green-700 mb-4">
         🎁 ¡COMPARTE Y GANA!
@@ -687,17 +687,17 @@ const cargarRanking = async (
         ingresa tu cedula, podras compartir y ganar muchos premios.
       </p>
 
-      <input
-        type="tel"
-        placeholder="Ingresa tu cédula"
-        value={cedulaReferido}
-        onChange={(e) =>
-           setCedulaReferido(
-      e.target.value.replace(/\D/g, '')
-    )
+     <input
+  type="tel"
+  inputMode="numeric"
+  pattern="[0-9]*"
+  placeholder="Ingrese su cédula"
+  value={cedulaReferido}
+  onChange={(e) =>
+    setCedulaReferido(e.target.value)
   }
-        className="w-full border-2 border-gray-900 rounded-2xl p-4 text-lg"
-      />
+  className="w-full border-4 border-black rounded-3xl p-5 text-3xl font-black text-black placeholder:text-gray-400 bg-white "
+/>
 
       <button
         onClick={consultarReferidos}

@@ -8,263 +8,326 @@ import LogoutButton from '@/components/LogoutButton'
 
 export default function GanadoresReferidosPage() {
 
-  const [campania, setCampania] = useState<any>(null)
-  const [ranking, setRanking] = useState<any[]>([])
+const [campania, setCampania] =
+useState<any>(null)
 
-  useEffect(() => {
+const [premio, setPremio] =
+useState<any>(null)
 
-    cargarCampania()
-    cargarRanking()
+const [ranking, setRanking] =
+useState<any[]>([])
 
-  }, [])
+useEffect(() => {
 
-  const cargarCampania = async () => {
 
-    const { data } = await supabase
-      .from('campanias_referidos')
-      .select('*')
-      .eq('activa', true)
-      .single()
+cargarCampania()
 
-    if (data) {
 
-      setCampania(data)
+}, [])
 
-    }
+const cargarCampania = async () => {
 
-  }
 
-  const cargarRanking = async () => {
+const { data } = await supabase
+  .from('campanias_referidos')
+  .select('*')
+  .eq('activa', true)
+  .single()
 
-    const { data } = await supabase
-      .from('participantes')
-      .select('*')
+if (!data) return
 
-    if (!data) return
+setCampania(data)
 
-    const rankingTemp = []
+const { data: premioData } =
+  await supabase
+    .from('premios')
+    .select('*')
+    .eq('id', data.premio_id)
+    .single()
 
-    for (const participante of data) {
+if (premioData) {
 
-      const { count } = await supabase
-        .from('participantes')
-        .select('*', {
-          count: 'exact',
-          head: true,
-        })
-        .eq(
-          'referido_por',
-          participante.codigo_referido
-        )
+  setPremio(premioData)
 
-      rankingTemp.push({
-        participante,
-        total: count || 0,
-      })
+}
 
-    }
+cargarRanking()
 
-    rankingTemp.sort(
-      (a, b) => b.total - a.total
+
+}
+
+const cargarRanking = async () => {
+
+
+const { data } = await supabase
+  .from('participantes')
+  .select('*')
+
+if (!data) return
+
+const rankingTemp = []
+
+for (const participante of data) {
+
+  const { count } = await supabase
+    .from('participantes')
+    .select('*', {
+      count: 'exact',
+      head: true,
+    })
+    .eq(
+      'referido_por',
+      participante.codigo_referido
     )
 
-    setRanking(
-      rankingTemp.slice(0, 20)
-    )
+  rankingTemp.push({
 
-  }
+    participante,
 
-  const declararGanador = async (
-    item: any
-  ) => {
+    total: count || 0
 
-    if (!campania) {
+  })
 
-      alert(
-        'No existe campaña activa'
-      )
+}
 
-      return
+rankingTemp.sort(
+  (a, b) => b.total - a.total
+)
 
-    }
+setRanking(rankingTemp)
 
-    const confirmar =
-      confirm(
-        `¿Declarar ganador a ${item.participante.nombre}?`
-      )
 
-    if (!confirmar) return
+}
 
-    const { error } =
-      await supabase
-        .from('ganadores_referidos')
-        .insert([
-          {
-            participante_id:
-              item.participante.id,
+const generarGanadores = async () => {
 
-            campania_id:
-              campania.id,
 
-            total_referidos:
-              item.total,
+if (!campania) {
 
-            observacion:
-              'Ganador campaña referidos'
-          }
-        ])
+  alert(
+    'No existe campaña activa'
+  )
 
-    if (error) {
+  return
 
-      console.log(error)
+}
 
-      alert(error.message)
+if (!premio) {
 
-      return
+  alert(
+    'No existe premio asociado'
+  )
 
-    }
+  return
 
-    alert(
-      'Ganador registrado correctamente'
-    )
+}
 
-  }
+const cantidadGanadores =
+  premio.cantidad || 1
 
-  return (
+const confirmar = confirm(
 
-    <AuthGuard>
+  `Se seleccionarán automáticamente los ${cantidadGanadores} mejores referidores. ¿Desea continuar?`
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-4 md:p-10">
+)
 
-        <div className="max-w-6xl w-full mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+if (!confirmar) return
 
-          <div className="bg-green-700 p-6">
+await supabase
+  .from('ganadores_referidos')
+  .delete()
+  .eq(
+    'campania_id',
+    campania.id
+  )
 
-            <div className="flex justify-end mb-4">
+const topGanadores =
+  ranking.slice(
+    0,
+    cantidadGanadores
+  )
 
-              <LogoutButton />
+for (
+  let i = 0;
+  i < topGanadores.length;
+  i++
+) {
 
-            </div>
+  const ganador =
+    topGanadores[i]
 
-            <h1 className="text-3xl md:text-5xl font-black text-white text-center">
+  await supabase
+    .from('ganadores_referidos')
+    .insert([
+      {
+        participante_id:
+          ganador.participante.id,
 
-              🏆 GANADORES REFERIDOS
+        campania_id:
+          campania.id,
 
-            </h1>
+        premio_id:
+          premio.id,
+
+        posicion:
+          i + 1,
+
+        total_referidos:
+          ganador.total,
+
+        observacion:
+          `Ganador automático puesto ${i + 1}`
+      }
+    ])
+
+}
+
+await supabase
+  .from('campanias_referidos')
+  .update({
+    activa: false
+  })
+  .eq(
+    'id',
+    campania.id
+  )
+
+alert(
+  `${topGanadores.length} ganadores registrados correctamente`
+)
+
+
+}
+
+return (
+
+
+<AuthGuard>
+
+  <main className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-red-700 p-4 md:p-10">
+
+    <div className="max-w-6xl w-full mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+      <div className="bg-green-700 p-6">
+
+        <div className="flex justify-end mb-4">
+
+          <LogoutButton />
+
+        </div>
+
+        <h1 className="text-3xl md:text-5xl font-black text-white text-center">
+
+          🏆 GANADORES REFERIDOS
+
+        </h1>
+
+      </div>
+
+      <div className="p-5 md:p-10">
+
+        {campania && (
+
+          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-3xl p-5 mb-8">
+
+            <h2 className="text-2xl font-black text-yellow-700">
+
+              🎁 CAMPAÑA ACTIVA
+
+            </h2>
+
+            <p className="mt-3 font-bold">
+
+              {campania.nombre}
+
+            </p>
+
+            <p>
+
+              Premio:
+              {' '}
+              {campania.premio}
+
+            </p>
+
+            <p>
+
+              Meta:
+              {' '}
+              {campania.meta_referidos}
+
+            </p>
 
           </div>
 
-          <div className="p-5 md:p-10">
+        )}
 
-            {campania && (
+        <h2 className="text-2xl md:text-4xl font-black text-blue-900 mb-5">
 
-              <div className="bg-yellow-50 border-2 border-yellow-300 rounded-3xl p-5 mb-8">
+          🏆 RANKING REFERIDOS
 
-                <h2 className="text-2xl font-black text-yellow-700">
+        </h2>
 
-                  🎁 CAMPAÑA ACTIVA
+        <div className="space-y-3">
 
-                </h2>
+          {ranking.slice(0, 20).map(
+            (
+              item,
+              index
+            ) => (
 
-                <p className="mt-2">
+              <div
+                key={
+                  item.participante.id
+                }
+                className="border-2 rounded-2xl p-4 bg-gray-50"
+              >
 
-                  {campania.nombre}
+                <p className="font-black text-xl">
+
+                  #{index + 1}
+
+                  {' - '}
+
+                  {item.participante.nombre}
 
                 </p>
 
                 <p>
 
-                  Premio:
+                  Referidos:
                   {' '}
-                  {campania.premio}
-
-                </p>
-
-                <p>
-
-                  Meta:
-                  {' '}
-                  {campania.meta_referidos}
-                  {' '}
-                  referidos
+                  {item.total}
 
                 </p>
 
               </div>
 
-            )}
-
-            <h2 className="text-2xl md:text-4xl font-black text-blue-900 mb-5">
-
-              🏆 TOP REFERIDOS
-
-            </h2>
-
-            <div className="space-y-4">
-
-              {ranking.map(
-                (
-                  item,
-                  index
-                ) => (
-
-                  <div
-                    key={
-                      item.participante.id
-                    }
-                    className="border-2 rounded-2xl p-4 flex justify-between items-center"
-                  >
-
-                    <div>
-
-                      <p className="font-black text-xl">
-
-                        #{index + 1}
-
-                        {' - '}
-
-                        {item.participante.nombre}
-
-                      </p>
-
-                      <p>
-
-                        Referidos:
-                        {' '}
-                        {item.total}
-
-                      </p>
-
-                    </div>
-
-                    <button
-                      onClick={() =>
-                        declararGanador(
-                          item
-                        )
-                      }
-                      className="bg-green-600 text-white font-black px-4 py-3 rounded-xl"
-                    >
-
-                      🏆 GANADORES
-
-                    </button>
-
-                  </div>
-
-                )
-              )}
-
-            </div>
-
-          </div>
+            )
+          )}
 
         </div>
 
-      </main>
+        <button
+          onClick={
+            generarGanadores
+          }
+          className="w-full mt-8 bg-green-700 hover:bg-green-800 text-white font-black text-2xl p-5 rounded-2xl"
+        >
 
-    </AuthGuard>
+          🏆 GENERAR GANADORES AUTOMÁTICOS
 
-  )
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</AuthGuard>
+
+
+)
 
 }
