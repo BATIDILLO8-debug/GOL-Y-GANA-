@@ -40,7 +40,7 @@ export default function PatrocinadoresPage() {
 
       console.log(error)
 
-      alert('Error guardando patrocinador')
+        alert(error.message)
 
       return
 
