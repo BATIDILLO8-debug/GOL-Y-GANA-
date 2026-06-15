@@ -23,10 +23,10 @@ export default function SorteoPage() {
   const [cantidadTermos, setCantidadTermos] = useState(12)
 
   const [ganadores, setGanadores] = useState<any>({
-    gorras: [],
-    camisas: [],
-    balones: [],
-    termos: [],
+    Combos: [],
+    Camisas: [],
+    Dinero: [],
+    Otros: [],
   })
 
   // CARGAR PARTIDOS

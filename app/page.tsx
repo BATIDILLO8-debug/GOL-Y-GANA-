@@ -584,7 +584,7 @@ const cargarRanking = async (
 
       </p>
 
-      <div className="mt-5 text-left space-y-2">
+      <div className="mt-5 text-left space-y-3 text-gray-900 font-bold">
 
         <p>✅ Nuevos partidos</p>
 
@@ -604,7 +604,7 @@ const cargarRanking = async (
 
       </div>
 
-      <p className="mt-4 text-sm text-gray-500">
+      <p className="mt-4 text-sm text-gray-900">
 
         Después de instalar, vuelve a abrir la aplicación desde tu pantalla principal.
 

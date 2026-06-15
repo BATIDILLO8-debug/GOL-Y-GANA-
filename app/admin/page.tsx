@@ -95,7 +95,12 @@ return (
         </h2>
 
         <div className="grid md:grid-cols-2 gap-5 mb-12">
-
+<a
+  href="/admin/patrocinadores"
+  className="bg-purple-700 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+>
+  🤝 PATROCINADORES
+</a>
           <a
             href="/admin/participantes"
             className="bg-blue-900 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
