@@ -61,11 +61,11 @@ export default function LoginPage() {
 
         <div className="bg-gradient-to-r from-yellow-400 via-red-500 to-blue-900 p-8 text-center">
 
-          <h1 className="text-6xl font-black text-white uppercase">
+          <h1 className="text-4xl md:text-6xl font-black text-white uppercase">
             Login Admin
           </h1>
 
-          <p className="text-2xl text-white font-bold mt-3">
+          <p className="text-lg md:text-2xl text-white font-bold mt-3">
             Gol y Gana con Nuestra Selección
           </p>
 
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
         {/* CONTENIDO */}
 
-        <div className="p-10">
+        <div className="p-5 md:p-10">
 
           <div className="space-y-8">
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
                 placeholder="admin@golygana.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border-2 border-blue-900 rounded-2xl p-6 text-2xl"
+                className="w-full border-2 border-blue-900 rounded-2xl p-6 text-2xl text-black font-bold placeholder:text-gray-500"
               />
 
             </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
                 placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border-2 border-blue-900 rounded-2xl p-6 text-2xl"
+                className="w-full border-2 border-blue-900 rounded-2xl p-6 text-2xl text-black font-bold placeholder:text-gray-500"
               />
 
             </div>
