@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import InstallAppButton from '@/components/InstallAppButton'
+import { registrarPush } from '@/lib/push'
 
 export default function Home() {
   const [appInstalada, setAppInstalada] =
@@ -119,6 +120,7 @@ useEffect(() => {
 
   cargarPartido()
   cargarCampania()
+  registrarPush()
 const esAndroid =
   /Android/i.test(
     navigator.userAgent
@@ -849,7 +851,7 @@ const cargarRanking = async (
 )}
 {ranking.length > 0 && (
 
-  <div className="mt-6 bg-white border-2 border-yellow-300 rounded-2xl p-4">
+ <div className="mt-6 bg-white border-2 border-yellow-300 rounded-2xl p-4 max-h-[400px] overflow-y-auto">
 
     <h3 className="text-xl font-black text-center text-yellow-700 mb-4">
 
@@ -866,19 +868,23 @@ const cargarRanking = async (
 
         <div>
 
-          <span className="text-black font-black text-xl">
+  <div className="text-xl font-black text-blue-900">
 
-            {index === 0 && '🥇 '}
-            {index === 1 && '🥈 '}
-            {index === 2 && '🥉 '}
+    {index === 0 && '🥇'}
+    {index === 1 && '🥈'}
+    {index === 2 && '🥉'}
 
-            {index > 2 && `#${index + 1} `}
+    {index > 2 && `#${index + 1}`}
 
-          </span>
-<span className="truncate max-w-[150px] block">
-  {item.nombre}
-</span>
-        </div>
+  </div>
+
+  <div className="truncate max-w-[220px] text-black font-bold">
+
+    {item.nombre}
+
+  </div>
+
+</div>
 
         <div className="font-black text-blue-900">
 
