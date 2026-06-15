@@ -87,34 +87,15 @@ export default function CampaniasPage() {
         .from('campanias_referidos')
         .insert([
           {
-            nombre:
-              'Comparte y Gana',
-
-            descripcion:
-              premioSeleccionado.descripcion,
-
-            patrocinador:
-              premioSeleccionado
-                ?.patrocinadores?.nombre ||
-
-              'Patrocinador',
-
-            premio:
-              premioSeleccionado.nombre,
-
-            imagen:
-              premioSeleccionado.imagen,
-
-            meta_referidos:
-              Number(metaReferidos),
-
-            fecha_inicio:
-              fechaInicio,
-
-            fecha_fin:
-              fechaFin,
-
-            activa: true
+             descripcion: premioSeleccionado.descripcion,
+  patrocinador: premioSeleccionado?.patrocinadores?.nombre,
+  premio: premioSeleccionado.nombre,
+  premio_id: Number(premioId),
+  imagen: premioSeleccionado.imagen,
+  meta_referidos: Number(metaReferidos),
+  fecha_inicio: fechaInicio,
+  fecha_fin: fechaFin,
+  activa: true
           }
         ])
 

@@ -683,7 +683,7 @@ const cargarRanking = async (
         🎁 ¡COMPARTE Y GANA!
       </h2>
 
-      <p className="text-center text-gray-700 mb-6">
+      <p className="text-center text-gray-900 mb-6">
         ingresa tu cedula, podras compartir y ganar muchos premios.
       </p>
 
@@ -696,7 +696,7 @@ const cargarRanking = async (
       e.target.value.replace(/\D/g, '')
     )
   }
-        className="w-full border-2 border-gray-900 rounded-2xl p-3 text-lg"
+        className="w-full border-2 border-gray-900 rounded-2xl p-4 text-lg"
       />
 
       <button
