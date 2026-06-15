@@ -6,6 +6,11 @@ import { supabase } from '@/lib/supabase'
 import InstallAppButton from '@/components/InstallAppButton'
 
 export default function Home() {
+  const [appInstalada, setAppInstalada] =
+  useState(false)
+
+const [mostrarInstalacion, setMostrarInstalacion] =
+  useState(false)
 
   const [cedula, setCedula] = useState('')
   const [nombre, setNombre] = useState('')
@@ -114,7 +119,24 @@ useEffect(() => {
 
   cargarPartido()
   cargarCampania()
+const esAndroid =
+  /Android/i.test(
+    navigator.userAgent
+  )
 
+const instalada =
+  window.matchMedia(
+    '(display-mode: standalone)'
+  ).matches
+
+if (
+  esAndroid &&
+  !instalada
+) {
+
+  setMostrarInstalacion(true)
+
+}
   const params =
     new URLSearchParams(window.location.search)
 
@@ -203,6 +225,26 @@ useEffect(() => {
   // GUARDAR PARTICIPACION
 
   const guardarParticipacion = async () => {
+    const esAndroid =
+  /Android/i.test(
+    navigator.userAgent
+  )
+
+const instalada =
+  window.matchMedia(
+    '(display-mode: standalone)'
+  ).matches
+
+if (
+  esAndroid &&
+  !instalada
+) {
+
+  setMostrarInstalacion(true)
+
+  return
+
+}
 
     if (
       !cedula ||
@@ -355,6 +397,7 @@ const codigoReferidoNuevo = crypto
     setMarcadorA('')
     setMarcadorB('')
   }
+ 
 const compartirWhatsapp = () => {
 
    const codigo =
@@ -521,7 +564,57 @@ const cargarRanking = async (
       {/* CAPA OSCURA */}
 
       <div className="absolute inset-0 bg-black/40"></div>
+{/* MODAL INSTALACION */}
 
+{mostrarInstalacion && (
+
+  <div className="fixed inset-0 z-[99999] bg-black/95 flex items-center justify-center p-4">
+
+    <div className="bg-white rounded-3xl p-6 max-w-md w-full text-center">
+
+      <h2 className="text-3xl font-black text-blue-900">
+
+        📲 INSTALA LA APP
+
+      </h2>
+
+      <p className="mt-4 text-gray-700">
+
+        Para participar debes instalar la aplicación oficial.
+
+      </p>
+
+      <div className="mt-5 text-left space-y-2">
+
+        <p>✅ Nuevos partidos</p>
+
+        <p>✅ Resultados oficiales</p>
+
+        <p>✅ Ganadores</p>
+
+        <p>✅ Premios especiales</p>
+
+        <p>✅ Notificaciones push</p>
+
+      </div>
+
+      <div className="mt-6">
+
+        <InstallAppButton />
+
+      </div>
+
+      <p className="mt-4 text-sm text-gray-500">
+
+        Después de instalar, vuelve a abrir la aplicación desde tu pantalla principal.
+
+      </p>
+
+    </div>
+
+  </div>
+
+)}
       {/* MODAL REGLAMENTO */}
 
       {
@@ -624,73 +717,121 @@ const cargarRanking = async (
     <p className="mt-4 text-gray-700 font-bold">
       👥 Referidos registrados
     </p>
-    
-{campaniaActiva && (
 
-  <div className="mt-4">
+    <div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2 text-center">
+      {totalReferidos}
+    </div>
 
-    <p className="text-sm font-bold text-gray-700">
-      🎯 Meta:
-      {campaniaActiva.meta_referidos}
-      {' '}referidos
+    {posicionRanking && (
+
+      <div className="mt-4 bg-yellow-100 border border-yellow-300 rounded-xl p-3">
+
+        <p className="font-black text-yellow-800 text-center">
+          🏆 Tu posición en el ranking: #{posicionRanking}
+        </p>
+
+      </div>
+
+    )}
+
+    {campaniaActiva && (
+
+      <div className="mt-4">
+
+        <p className="text-sm font-bold text-gray-700">
+          🎯 Meta: {campaniaActiva.meta_referidos} referidos
+        </p>
+
+        <div className="w-full bg-gray-200 rounded-full h-5 mt-2 overflow-hidden">
+
+          <div
+            className="bg-green-600 h-5 transition-all duration-500"
+            style={{
+              width: `${progresoReferidos}%`
+            }}
+          />
+
+        </div>
+
+        <p className="font-black text-green-700 mt-2 text-center">
+          {progresoReferidos}% completado
+        </p>
+
+      </div>
+
+    )}
+
+    {campaniaActiva && (
+
+  <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4">
+
+    <h3 className="text-center text-xl font-black text-yellow-700 mb-3">
+
+      🎁 {campaniaActiva.nombre}
+
+    </h3>
+
+    {campaniaActiva.imagen && (
+
+      <img
+        src={campaniaActiva.imagen}
+        alt="Premio"
+        className="w-full rounded-2xl mb-3"
+      />
+
+    )}
+
+    <p className="text-gray-700 text-center mb-3">
+
+      {campaniaActiva.descripcion}
+
     </p>
 
-    <div className="w-full bg-gray-200 rounded-full h-5 mt-2 overflow-hidden">
+    <div className="bg-white rounded-xl p-3 border">
 
-      <div
-        className="bg-green-600 h-5 transition-all duration-500"
-        style={{
-          width: `${progresoReferidos}%`
-        }}
-      />
+      <p className="font-black text-green-700">
+
+        🎁 Premio
+
+      </p>
+
+      <p className="font-bold">
+        {campaniaActiva.premio}
+      </p>
 
     </div>
 
-    <p className="font-black text-green-700 mt-2">
-      {progresoReferidos}% completado
-    </p>
+    <div className="bg-white rounded-xl p-3 border mt-3">
 
-  </div>
+      <p className="font-black text-blue-700">
 
-)}
- {posicionRanking && (
+        🏪 Patrocinador
 
-  <div className="mt-4 bg-yellow-100 border border-yellow-300 rounded-xl p-3">
+      </p>
 
-    <p className="font-black text-yellow-800 text-center">
+      <p className="font-bold">
+        {campaniaActiva.patrocinador}
+      </p>
 
-      🏆 Tu posición en el ranking:
-      #{posicionRanking}
+    </div>
 
-    </p>
+    <div className="bg-white rounded-xl p-3 border mt-3">
 
-  </div>
+      <p className="font-black text-red-700">
 
-)}
-<p className="mt-4 text-gray-700 font-bold">
-  👥 Referidos registrados
-</p>
+        📅 Finaliza
 
-<div className="bg-blue-900 text-white text-3xl font-black rounded-2xl py-3 mt-2 text-center">
-  {totalReferidos}
-</div>
-{campaniaActiva && (
+      </p>
 
-  <div className="mt-4 bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-3">
+      <p className="font-bold">
 
-    <p className="font-black text-yellow-700">
-      🎁 Premio actual
-    </p>
+        {new Date(
+          campaniaActiva.fecha_fin
+        ).toLocaleDateString()}
 
-    <p className="font-bold">
-      {campaniaActiva.premio}
-    </p>
+      </p>
 
-    <p className="text-sm text-gray-600 mt-1">
-      Patrocinado por:
-      {' '}
-      {campaniaActiva.patrocinador}
-    </p>
+    </div>
 
   </div>
 
@@ -738,9 +879,9 @@ const cargarRanking = async (
             {index > 2 && `#${index + 1} `}
 
           </span>
-
-          {item.nombre}
-
+<span className="truncate max-w-[150px] block">
+  {item.nombre}
+</span>
         </div>
 
         <div className="font-black text-blue-900">
