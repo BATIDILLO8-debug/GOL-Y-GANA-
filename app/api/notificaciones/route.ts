@@ -125,7 +125,13 @@ export async function POST(
           'FCM ERROR:',
           error
         )
-
+await supabase
+  .from('push_subscriptions')
+  .delete()
+  .eq(
+    'token',
+    item.token
+  )
         errores++
 
       }
