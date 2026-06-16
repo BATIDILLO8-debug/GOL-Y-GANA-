@@ -121,37 +121,52 @@ useEffect(() => {
   cargarPartido()
   cargarCampania()
   registrarPush()
-const esAndroid =
-  /Android/i.test(
-    navigator.userAgent
-  )
 
-const instalada =
-  window.matchMedia(
-    '(display-mode: standalone)'
-  ).matches
+  const esAndroid =
+    /Android/i.test(
+      navigator.userAgent
+    )
 
-if (
-  esAndroid &&
-  !instalada
-) {
+  const instalada =
+    window.matchMedia(
+      '(display-mode: standalone)'
+    ).matches
 
-  setMostrarInstalacion(true)
+  if (
+    esAndroid &&
+    !instalada
+  ) {
 
-}
+    setMostrarInstalacion(true)
+
+  }
+
   const params =
-    new URLSearchParams(window.location.search)
+    new URLSearchParams(
+      window.location.search
+    )
 
-  const ref = params.get('ref')
+  const ref =
+    params.get('ref')
+
+    console.log('REF URL:', ref)
 
   if (ref) {
 
     setReferidoPor(ref)
 
+    localStorage.setItem(
+      'referido',
+      ref
+    )
+  console.log(
+    'REFERIDO GUARDADO:',
+    localStorage.getItem('referido')
+  )
+
   }
 
 }, [])
-
   // CONTADOR
 
   useEffect(() => {
@@ -227,6 +242,16 @@ if (
   // GUARDAR PARTICIPACION
 
   const guardarParticipacion = async () => {
+
+          const referidoPor =
+    localStorage.getItem(
+      'referido'
+    )
+
+    console.log(
+  'REFERIDO AL REGISTRAR:',
+  referidoPor
+)
     const esAndroid =
   /Android/i.test(
     navigator.userAgent
@@ -395,11 +420,14 @@ const codigoReferidoNuevo = crypto
     setCodigoGenerado(codigo)
 
     setMostrarExito(true)
-
+ localStorage.removeItem(
+  'referido'
+)
     setMarcadorA('')
     setMarcadorB('')
   }
- 
+
+
 const compartirWhatsapp = () => {
 
    const codigo =
