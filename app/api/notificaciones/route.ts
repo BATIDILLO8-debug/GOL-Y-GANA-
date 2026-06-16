@@ -9,50 +9,124 @@ export async function POST(
 
   try {
 
-    const {
-      titulo,
-      mensaje
-    } = await request.json()
+    const body =
+      await request.json()
 
-    const { data: tokens } =
+    const titulo =
+      body.titulo
+
+    const mensaje =
+      body.mensaje
+
+    if (!titulo || !mensaje) {
+
+      return NextResponse.json({
+
+        success: false,
+
+        error:
+          'Título y mensaje requeridos'
+
+      })
+
+    }
+
+    const { data: tokens, error } =
       await supabase
         .from('push_subscriptions')
         .select('token')
 
+    if (error) {
+
+      console.error(error)
+
+      return NextResponse.json({
+
+        success: false,
+
+        error:
+          'Error consultando tokens'
+
+      })
+
+    }
+
     if (!tokens?.length) {
 
       return NextResponse.json({
+
         success: false,
-        message: 'No hay dispositivos'
+
+        error:
+          'No existen dispositivos registrados'
+
       })
 
     }
 
     let enviados = 0
+    let errores = 0
 
     for (const item of tokens) {
 
       try {
 
-        await messaging.send({
+        const response =
+          await messaging.send({
 
-          token: item.token,
+            token:
+              item.token,
 
-          notification: {
-            title: titulo,
-            body: mensaje
-          }
+            notification: {
 
-        })
+              title:
+                titulo,
+
+              body:
+                mensaje
+
+            },
+
+            webpush: {
+
+              notification: {
+
+                title:
+                  titulo,
+
+                body:
+                  mensaje,
+
+                icon:
+                  '/icon-192.png',
+
+                badge:
+                  '/icon-192.png',
+
+                requireInteraction:
+                  true
+
+              }
+
+            }
+
+          })
+
+        console.log(
+          'FCM OK:',
+          response
+        )
 
         enviados++
 
       } catch (error) {
 
-        console.log(
-          'Token inválido:',
-          item.token
+        console.error(
+          'FCM ERROR:',
+          error
         )
+
+        errores++
 
       }
 
@@ -62,17 +136,25 @@ export async function POST(
 
       success: true,
 
-      enviados
+      enviados,
+
+      errores,
+
+      total:
+        tokens.length
 
     })
 
   } catch (error) {
 
-    console.log(error)
+    console.error(error)
 
     return NextResponse.json({
 
-      success: false
+      success: false,
+
+      error:
+        'Error interno'
 
     })
 
