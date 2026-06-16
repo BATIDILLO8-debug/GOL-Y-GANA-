@@ -128,7 +128,12 @@ return (
           >
             📺 PARTIDO EN VIVO
           </a>
-
+<a
+  href="/admin/notificaciones"
+  className="bg-red-700 text-white p-6 rounded-3xl text-center text-2xl font-black hover:scale-105 transition-all"
+>
+  📣 NOTIFICACIONES
+</a>
         </div>
 
         <h2 className="text-3xl font-black text-blue-900 mb-8">
